@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>little lines. — Aidan's Sketchbook</title>
+  <title>little lines sketchbook</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,26 +21,6 @@
       --border-parchment: #ded6c5;
       --accent-green: #2d4030;
       --accent-sage: #8fa08a;
-    }
-
-    body.theme-charcoal {
-      --bg-parchment: #181c19;
-      --card-parchment: #222924;
-      --text-ink: #e5ede7;
-      --text-muted: #a3b3a7;
-      --border-parchment: #2e3b33;
-      --accent-green: #8fa08a;
-      --accent-sage: #536456;
-    }
-
-    body.theme-blueprint {
-      --bg-parchment: #1b263b;
-      --card-parchment: #22304a;
-      --text-ink: #e0f2fe;
-      --text-muted: #93c5fd;
-      --border-parchment: #2d4360;
-      --accent-green: #38bdf8;
-      --accent-sage: #60a5fa;
     }
 
     body {
@@ -66,35 +46,18 @@
       opacity: 0.04;
     }
 
-    /* Elastic Pull / Rubber-band spring wrapper */
-    #pull-wrapper {
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      will-change: transform;
-      min-height: 100vh;
-    }
-
-    /* Highly Emphasized Organic Morphing Shape Container with subtle continuous rotation */
+    /* Organic continuous morphing animation with outer rotation */
     .morph-shape {
-      animation: organicMorph 12s ease-in-out infinite, slowRotate 24s linear infinite;
+      animation: organicMorph 14s ease-in-out infinite, slowRotate 30s linear infinite;
       will-change: border-radius, transform;
     }
 
     @keyframes organicMorph {
-      0% {
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-      }
-      25% {
-        border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
-      }
-      50% {
-        border-radius: 40% 60% 50% 50% / 55% 45% 55% 45%;
-      }
-      75% {
-        border-radius: 73% 27% 44% 56% / 49% 73% 27% 51%;
-      }
-      100% {
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-      }
+      0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+      25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+      50% { border-radius: 40% 60% 50% 50% / 55% 45% 55% 45%; }
+      75% { border-radius: 73% 27% 44% 56% / 49% 73% 27% 51%; }
+      100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
     }
 
     @keyframes slowRotate {
@@ -102,9 +65,9 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Counter-rotation for inner image so it remains upright and stable */
+    /* Counter-rotation to keep artwork inside perfectly upright and stable */
     .counter-rotate {
-      animation: counterRotate 24s linear infinite;
+      animation: counterRotate 30s linear infinite;
       will-change: transform;
     }
 
@@ -113,7 +76,6 @@
       100% { transform: rotate(-360deg); }
     }
 
-    /* Cool Scroll & Category Transition Animations */
     .reveal-on-scroll {
       opacity: 0;
       transform: translateY(30px);
@@ -125,23 +87,15 @@
       transform: translateY(0);
     }
 
-    /* Category Grid Transition Effect */
     @keyframes gridFadeSlide {
-      0% {
-        opacity: 0;
-        transform: translateY(15px) scale(0.99);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(15px) scale(0.99); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .grid-transition {
       animation: gridFadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* Glowing pulse background */
     @keyframes glowPulse {
       0%, 100% { opacity: 0.3; transform: scale(1); }
       50% { opacity: 0.7; transform: scale(1.1); }
@@ -159,25 +113,24 @@
 </head>
 <body class="relative min-h-screen antialiased selection:bg-[var(--accent-sage)]/30 selection:text-[var(--accent-green)]">
 
+  <!-- Subtle paper background overlay -->
   <div class="fixed inset-0 pointer-events-none paper-texture z-50"></div>
 
-  <!-- ELASTIC PULL WRAPPER -->
-  <div id="pull-wrapper" class="flex flex-col justify-between">
+  <div class="flex flex-col justify-between min-h-screen">
     <div>
       <!-- NAVIGATION -->
-      <nav class="sticky top-0 z-40 bg-[var(--bg-parchment)]/90 backdrop-blur-md border-b border-[var(--border-parchment)] transition-all duration-300">
+      <nav id="main-nav" class="sticky top-0 z-40 bg-[var(--bg-parchment)]/90 backdrop-blur-md border-b border-[var(--border-parchment)] transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            <div class="w-10 h-10 rounded-full bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-md group-hover:rotate-12 transition-transform duration-300">
+            <div id="nav-logo-icon" class="w-10 h-10 rounded-full bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-md group-hover:rotate-12 transition-transform duration-300">
               A
             </div>
             <div>
-              <span class="font-serif font-bold text-lg text-[var(--text-ink)] tracking-wider block leading-none">little lines.</span>
-              <span class="text-xs text-[var(--text-muted)] font-academic italic tracking-widest">Aidan's Sketchbook</span>
+              <span id="nav-title" class="font-serif font-bold text-lg text-[var(--text-ink)] tracking-wider block leading-none">little lines sketchbook</span>
             </div>
           </div>
 
-          <!-- DESKTOP FILTER BUTTONS WITH MOMENTUM SLIDER -->
+          <!-- DESKTOP FILTER BUTTONS WITH SLIDER -->
           <div class="hidden md:flex items-center space-x-1 bg-[var(--card-parchment)] p-1.5 rounded-full border border-[var(--border-parchment)] shadow-inner relative" id="filter-container">
             <div id="filter-slider" class="absolute top-1.5 bottom-1.5 bg-[var(--accent-green)] rounded-full shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none" style="left: 6px; width: 85px;"></div>
             
@@ -187,17 +140,9 @@
             <button onclick="filterCategory('Concepts', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Concepts">Concepts</button>
           </div>
 
-          <!-- TINY TOOLS (ASMR AUDIO TOGGLE + THEME PICKER) -->
+          <!-- TOOLS -->
           <div class="flex items-center space-x-2">
-            <button onclick="togglePencilSound()" id="sound-btn" title="Toggle ASMR Pencil Scribble Audio" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 shadow-sm text-xs">
-              <i class="fa-solid fa-volume-xmark" id="sound-icon"></i>
-            </button>
-
-            <button onclick="cycleTheme()" title="Switch Studio Tone" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 shadow-sm text-xs">
-              <i class="fa-solid fa-palette"></i>
-            </button>
-
-            <span class="hidden sm:inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--card-parchment)] px-3 py-1.5 rounded-full border border-[var(--border-parchment)] shadow-sm" id="art-count-badge">
+            <span class="inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--card-parchment)] px-3 py-1.5 rounded-full border border-[var(--border-parchment)] shadow-sm" id="art-count-badge">
               15 Studies
             </span>
             <a href="upload.html" title="Admin Studio" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] hover:rotate-90 transition-all duration-300 shadow-sm">
@@ -221,7 +166,7 @@
           <div class="lg:col-span-7 space-y-6 reveal-on-scroll">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[var(--text-ink)] leading-tight">
               Observational <br>
-              <span class="font-academic italic font-normal text-[var(--text-muted)] transition-all hover:text-[var(--text-ink)]">studies & form.</span>
+              <span class="font-academic italic font-normal text-[var(--text-muted)]">studies & form.</span>
             </h1>
 
             <p class="text-base sm:text-lg text-[var(--text-muted)] font-academic leading-relaxed max-w-2xl">
@@ -233,10 +178,6 @@
                 <span>Explore Collection</span>
                 <i class="fa-solid font-xs fa-arrow-down animate-bounce"></i>
               </a>
-              <button onclick="openRandomArtwork()" class="px-6 py-3 bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] rounded-xl text-sm font-medium hover:bg-[var(--border-parchment)]/40 hover:scale-105 transition-all duration-300 shadow-sm flex items-center space-x-2">
-                <i class="fa-solid fa-dice hover:rotate-180 transition-transform duration-500"></i>
-                <span>Random Study</span>
-              </button>
             </div>
           </div>
 
@@ -244,18 +185,24 @@
             <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
               <div class="absolute inset-0 rounded-full bg-[var(--accent-sage)]/30 blur-3xl glow-bg"></div>
               
-              <!-- MORPHING SHAPE FRAME WITH ROTATING OUTER FRAME AND COUNTER-ROTATING STABLE IMAGE -->
+              <!-- Organic morphing rotating frame -->
               <div onclick="openCurrentSlideModal()" class="relative w-full h-full morph-shape bg-[var(--accent-green)] p-1.5 shadow-2xl cursor-pointer overflow-hidden group">
-                <div class="relative w-full h-full overflow-hidden morph-shape bg-[var(--card-parchment)] counter-rotate">
-                  <div id="slideshow-track" class="relative w-full h-full flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(0%); width: 200%;">
-                    <div class="w-1/2 h-full flex-shrink-0">
-                      <img id="slideshow-img-1" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                <div class="relative w-full h-full overflow-hidden rounded-[inherit] bg-[var(--card-parchment)] counter-rotate">
+                  
+                  <!-- Slideshow track with 3 visible slots for push-aside animation -->
+                  <div id="slideshow-track" class="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(-100%); width: 300%; left: -100%;">
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
+                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover scale-110">
                     </div>
-                    <div class="w-1/2 h-full flex-shrink-0">
-                      <img id="slideshow-img-2" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
+                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                    </div>
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
+                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover scale-110">
                     </div>
                   </div>
-                  <div class="absolute inset-0 bg-[var(--accent-green)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+
+                  <div class="absolute inset-0 bg-[var(--accent-green)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-20">
                     <div class="bg-[var(--card-parchment)]/95 backdrop-blur-md px-4 py-2 rounded-full text-xs font-semibold text-[var(--text-ink)] shadow-xl flex items-center space-x-2 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
                       <i class="fa-solid fa-magnifying-glass"></i>
                       <span>Inspect Study</span>
@@ -264,7 +211,7 @@
                 </div>
               </div>
 
-              <!-- CAPTION BAR WITH FIXED ARROWS -->
+              <!-- Controls underneath hero circle -->
               <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-[var(--card-parchment)]/95 backdrop-blur-md border border-[var(--border-parchment)] px-3 py-1.5 rounded-full text-xs text-[var(--text-ink)] shadow-lg flex items-center justify-between w-64 z-10">
                 <button onclick="prevSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] hover:scale-125 transition-all flex-shrink-0"><i class="fa-solid fa-chevron-left"></i></button>
                 <span id="slide-caption" class="font-mono text-[11px] font-medium truncate px-1 text-center flex-grow">Featured Study</span>
@@ -275,7 +222,7 @@
         </div>
       </section>
 
-      <!-- GALLERY SECTION -->
+      <!-- GALLERY SECTION - Editorial Staggered / Masonry Layout -->
       <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[var(--border-parchment)] reveal-on-scroll">
           <div>
@@ -292,9 +239,7 @@
           </div>
         </div>
 
-        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Gallery items rendered dynamically -->
-        </div>
+        <div id="gallery-grid" class="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]"></div>
       </section>
     </div>
 
@@ -312,7 +257,7 @@
 
   <!-- DETAIL MODAL -->
   <div id="art-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0 overflow-hidden" onclick="closeModalOnBackdrop(event)">
-    <div class="relative bg-[var(--card-parchment)] rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[var(--border-parchment)] my-8 flex flex-col md:flex-row transform scale-95 transition-all duration-300 z-20" id="modal-card" onclick="event.stopPropagation()">
+    <div class="relative bg-[var(--card-parchment)] rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[var(--border-parchment)] my-8 flex flex-col md:flex-row transform scale-95 transition-all duration-300 z-20" id="modal-card" onclick="event.stopPropagation()">
       <button onclick="closeModal()" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-[var(--card-parchment)]/90 backdrop-blur-md text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 flex items-center justify-center shadow-md">
         <i class="fa-solid fa-xmark text-lg hover:rotate-90 transition-transform"></i>
       </button>
@@ -368,31 +313,29 @@
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
     const DEFAULT_ARTWORKS = [
-      { id: 1, title: "Portrait Study 9/9/26 with Signature", category: "Portraits", date: "2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
-      { id: 2, title: "Portrait Study 6/20 HB No Reference", category: "Portraits", date: "2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
-      { id: 3, title: "Man in Coat", category: "Portraits", date: "2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
-      { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
-      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
-      { id: 6, title: "Skull Anatomy Perspective Grid I", category: "Anatomy", date: "2026", medium: "HB Graphite Pencil", image: "PXL_20261017_154914010.jpg", description: "Anatomical skull breakdown utilizing perspective construction lines." },
-      { id: 7, title: "Skull Anatomy Frontal View", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_154917483.jpg", description: "Frontal skull study mapping brow structures and orbital sockets." },
-      { id: 8, title: "Skull Anatomy & Brow Notes", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_154926365.jpg", description: "Detailed anatomical breakdown focusing on brow lines and cranial plates." },
-      { id: 9, title: "Skull Anatomy 3/4 Angle", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261018_022902080~2.jpg", description: "Three-quarter perspective study mapping brow planes." },
-      { id: 10, title: "Surreal Head Study & Melt", category: "Concepts", date: "2026", medium: "Graphite Pencil", image: "PXL_20261017_155016501~2.jpg", description: "Exploration of geometric planar breakdown melting into fluid drops." },
-      { id: 11, title: "Portrait Study (No Ref)", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155022266~2.jpg", description: "Freehand portrait study from imagination." },
-      { id: 12, title: "Portrait Study 6/20", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155457922~2.jpg", description: "Tonal portrait study focusing on soft shadows." },
-      { id: 13, title: "Portrait Study 6/19", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155035983~2.jpg", description: "Observational head study capturing curly hair texture." },
-      { id: 14, title: "Geometric Teapot Concept", category: "Concepts", date: "2026", medium: "Graphite Pencil", image: "PXL_20261017_155044822~2.jpg", description: "Combining sharp wireframe construction with shaded curved forms." },
-      { id: 15, title: "Hand Study & Anatomy", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Detailed graphite shading study of a pointing hand." }
+      { id: 1, title: "Portrait Study 9/9/26 with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
+      { id: 2, title: "Portrait Study 6/20 HB No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
+      { id: 3, title: "Man in Coat", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
+      { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "Oct 17, 2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
+      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
+      { id: 6, title: "Skull Anatomy Perspective Grid I", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "PXL_20261017_154914010.jpg", description: "Anatomical skull breakdown utilizing perspective construction lines." },
+      { id: 7, title: "Skull Anatomy Frontal View", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154917483.jpg", description: "Frontal skull study mapping brow structures and orbital sockets." },
+      { id: 8, title: "Skull Anatomy & Brow Notes", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154926365.jpg", description: "Detailed anatomical breakdown focusing on brow lines and cranial plates." },
+      { id: 9, title: "Skull Anatomy 3/4 Angle", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261018_022902080~2.jpg", description: "Three-quarter perspective study mapping brow planes." },
+      { id: 10, title: "Plane breakdown + memory sketch", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155016501~2.jpg", description: "Exploration of geometric planar breakdown melting into fluid drops." },
+      { id: 11, title: "Portrait Study (No Ref)", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155022266~2.jpg", description: "Freehand portrait study from imagination." },
+      { id: 12, title: "Portrait Study 6/20", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155457922~2.jpg", description: "Tonal portrait study focusing on soft shadows." },
+      { id: 13, title: "Portrait Study 6/19", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155035983~2.jpg", description: "Observational head study capturing curly hair texture." },
+      { id: 14, title: "Geometric Teapot Concept", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155044822~2.jpg", description: "Combining sharp wireframe construction with shaded curved forms." },
+      { id: 15, title: "HB pencil study of hand structure", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Focused mainly on the knuckles and how the skin wraps around the bone." }
     ];
 
     let ARTWORKS = [];
     let currentCategory = 'All';
     let currentSlideIndex = 0;
     let currentModalIndex = 0;
-    let soundEnabled = false;
-    let audioCtx = null;
-    let themes = ['', 'theme-charcoal', 'theme-blueprint'];
-    let currentThemeIdx = 0;
+    let slideInterval = null;
+    let isTransitioning = false;
 
     window.onload = function() {
       loadArtworks();
@@ -400,7 +343,6 @@
       initSlideshow();
       setupScrollReveal();
       setupKeyboardNav();
-      setupElasticPull();
       
       const defaultBtn = document.querySelector('.filter-btn[data-category="All"]');
       if (defaultBtn) updateSliderPosition(defaultBtn);
@@ -425,21 +367,21 @@
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
       grid.innerHTML = filtered.map((art, index) => `
-        <div onclick="openModalById(${art.id})" class="group bg-[var(--card-parchment)] rounded-3xl overflow-hidden border border-[var(--border-parchment)] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between transform hover:-translate-y-2 cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 80}ms;">
-          <div class="relative overflow-hidden aspect-[4/5] bg-black/5">
-            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+        <div onclick="openModalById(${art.id})" class="group bg-[var(--card-parchment)] mb-6 break-inside-avoid overflow-hidden border border-[var(--border-parchment)] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between transform hover:-translate-y-1 cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 80}ms;">
+          <div class="relative overflow-hidden bg-black/5">
+            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute top-3 left-3">
               <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-3 py-1 rounded-full border border-[var(--border-parchment)] shadow-sm">
                 ${art.category}
               </span>
             </div>
           </div>
-          <div class="p-6 flex-grow flex flex-col justify-between">
+          <div class="p-5 flex-grow flex flex-col justify-between">
             <div>
               <h3 class="font-serif font-bold text-base text-[var(--text-ink)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">${art.title}</h3>
               <p class="text-xs text-[var(--text-muted)] mt-1.5 font-mono">${art.medium}</p>
             </div>
-            <div class="mt-5 pt-3 border-t border-[var(--border-parchment)]/50 flex items-center justify-between text-xs text-[var(--text-muted)]">
+            <div class="mt-4 pt-3 border-t border-[var(--border-parchment)]/50 flex items-center justify-between text-xs text-[var(--text-muted)]">
               <span class="font-academic italic">${art.date}</span>
               <span class="font-medium text-[var(--text-ink)] group-hover:translate-x-1 transition-transform inline-flex items-center space-x-1"><span>View Details</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
             </div>
@@ -458,7 +400,6 @@
     }
 
     function filterCategory(cat, btnElement) {
-      playScribbleSound();
       currentCategory = cat;
       if (btnElement) updateSliderPosition(btnElement);
 
@@ -480,7 +421,6 @@
     }
 
     function handleSortChange() {
-      playScribbleSound();
       const val = document.getElementById('sort-select').value;
       if (val === 'title') ARTWORKS.sort((a, b) => a.title.localeCompare(b.title));
       else if (val === 'category') ARTWORKS.sort((a, b) => a.category.localeCompare(b.category));
@@ -490,58 +430,75 @@
 
     function initSlideshow() {
       if (!ARTWORKS.length) return;
-      const img1 = document.getElementById('slideshow-img-1');
-      const img2 = document.getElementById('slideshow-img-2');
-      const art1 = ARTWORKS[currentSlideIndex];
-      const art2 = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
+      const imgPrev = document.getElementById('slideshow-img-prev');
+      const imgCurr = document.getElementById('slideshow-img-curr');
+      const imgNext = document.getElementById('slideshow-img-next');
+      const track = document.getElementById('slideshow-track');
 
-      img1.src = art1.image;
-      img1.onerror = () => { img1.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art1.title)}`; };
+      const prevArt = ARTWORKS[(currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length];
+      const currArt = ARTWORKS[currentSlideIndex];
+      const nextArt = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
 
-      img2.src = art2.image;
-      img2.onerror = () => { img2.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art2.title)}`; };
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(-100%)';
 
-      document.getElementById('slide-caption').innerText = art1.title;
+      imgPrev.src = prevArt.image;
+      imgCurr.src = currArt.image;
+      imgNext.src = nextArt.image;
 
-      setInterval(() => nextSlide(), 5000);
+      document.getElementById('slide-caption').innerText = currArt.title;
+
+      if (slideInterval) clearInterval(slideInterval);
+      slideInterval = setInterval(() => nextSlide(), 5000);
     }
 
     function updateSlide(direction = 1) {
-      if (!ARTWORKS.length) return;
+      if (!ARTWORKS.length || isTransitioning) return;
+      isTransitioning = true;
+
       const track = document.getElementById('slideshow-track');
-      const img1 = document.getElementById('slideshow-img-1');
-      const img2 = document.getElementById('slideshow-img-2');
+      const imgPrev = document.getElementById('slideshow-img-prev');
+      const imgCurr = document.getElementById('slideshow-img-curr');
+      const imgNext = document.getElementById('slideshow-img-next');
       const caption = document.getElementById('slide-caption');
 
-      currentSlideIndex = (currentSlideIndex + direction + ARTWORKS.length) % ARTWORKS.length;
-      const art = ARTWORKS[currentSlideIndex];
-      const nextIndex = (currentSlideIndex + 1) % ARTWORKS.length;
-      const nextArt = ARTWORKS[nextIndex];
-
       track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-      track.style.transform = 'translateX(-50%)';
+      
+      if (direction === 1) {
+        track.style.transform = 'translateX(-200%)';
+      } else {
+        track.style.transform = 'translateX(0%)';
+      }
 
       setTimeout(() => {
-        track.style.transition = 'none';
-        img1.src = art.image;
-        img1.onerror = () => { img1.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
-        track.style.transform = 'translateX(0%)';
+        currentSlideIndex = (currentSlideIndex + direction + ARTWORKS.length) % ARTWORKS.length;
+        const currArt = ARTWORKS[currentSlideIndex];
+        const prevArt = ARTWORKS[(currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length];
+        const nextArt = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
 
-        img2.src = nextArt.image;
-        img2.onerror = () => { img2.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(nextArt.title)}`; };
-        caption.innerText = art.title;
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(-100%)';
+
+        imgPrev.src = prevArt.image;
+        imgCurr.src = currArt.image;
+        imgNext.src = nextArt.image;
+        caption.innerText = currArt.title;
+        isTransitioning = false;
       }, 700);
+
+      if (slideInterval) {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(() => nextSlide(), 5000);
+      }
     }
 
     function nextSlide(e) {
       if (e) e.stopPropagation();
-      playScribbleSound();
       updateSlide(1);
     }
 
     function prevSlide(e) {
       if (e) e.stopPropagation();
-      playScribbleSound();
       updateSlide(-1);
     }
 
@@ -550,15 +507,7 @@
       openModalById(ARTWORKS[currentSlideIndex].id);
     }
 
-    function openRandomArtwork() {
-      playScribbleSound();
-      if (!ARTWORKS.length) return;
-      const randomIndex = Math.floor(Math.random() * ARTWORKS.length);
-      openModalById(ARTWORKS[randomIndex].id);
-    }
-
     function openModalById(id) {
-      playScribbleSound();
       const idx = ARTWORKS.findIndex(a => a.id === id);
       if (idx === -1) return;
       currentModalIndex = idx;
@@ -590,7 +539,6 @@
     }
 
     function navigateModal(direction) {
-      playScribbleSound();
       currentModalIndex = (currentModalIndex + direction + ARTWORKS.length) % ARTWORKS.length;
       const container = document.getElementById('modal-img-container');
       container.classList.add('opacity-0');
@@ -601,7 +549,6 @@
     }
 
     function closeModal() {
-      playScribbleSound();
       const modal = document.getElementById('art-modal');
       const card = document.getElementById('modal-card');
       modal.classList.add('opacity-0');
@@ -619,79 +566,16 @@
 
     function copyStudyLink() {
       const art = ARTWORKS[currentModalIndex];
-      const text = `${window.location.origin}${window.location.pathname}#study-${art.id}`;
-      const tempInput = document.createElement('input');
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
+      const dummy = document.createElement('input');
+      document.body.appendChild(dummy);
+      dummy.value = window.location.href.split('#')[0] + '#study-' + art.id;
+      dummy.select();
       document.execCommand('copy');
-      document.body.removeChild(tempInput);
+      document.body.removeChild(dummy);
 
       const label = document.getElementById('copy-label');
       label.innerText = 'Copied!';
       setTimeout(() => { label.innerText = 'Share'; }, 2000);
-    }
-
-    function togglePencilSound() {
-      soundEnabled = !soundEnabled;
-      const icon = document.getElementById('sound-icon');
-      if (soundEnabled) {
-        icon.className = "fa-solid fa-volume-high";
-        initAudioContext();
-        playScribbleSound();
-      } else {
-        icon.className = "fa-solid fa-volume-xmark";
-      }
-    }
-
-    function initAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-    }
-
-    function playScribbleSound() {
-      if (!soundEnabled) return;
-      try {
-        initAudioContext();
-        const bufferSize = audioCtx.sampleRate * 0.08;
-        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
-        }
-
-        const whiteNoise = audioCtx.createBufferSource();
-        whiteNoise.buffer = buffer;
-
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.value = 1400;
-        filter.Q.value = 2.0;
-
-        const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-
-        whiteNoise.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        whiteNoise.start();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function cycleTheme() {
-      playScribbleSound();
-      const body = document.body;
-      if (themes[currentThemeIdx]) body.classList.remove(themes[currentThemeIdx]);
-      currentThemeIdx = (currentThemeIdx + 1) % themes.length;
-      if (themes[currentThemeIdx]) body.classList.add(themes[currentThemeIdx]);
     }
 
     function setupScrollReveal() {
@@ -707,49 +591,16 @@
     }
 
     function setupKeyboardNav() {
-      window.addEventListener('keydown', (e) => {
+      document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('art-modal');
         const isModalOpen = !modal.classList.contains('hidden');
 
         if (e.key === 'Escape' && isModalOpen) {
           closeModal();
-        } else if (e.key === 'ArrowRight') {
-          if (isModalOpen) navigateModal(1);
-          else nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-          if (isModalOpen) navigateModal(-1);
-          else prevSlide();
+        } else if (isModalOpen) {
+          if (e.key === 'ArrowRight') navigateModal(1);
+          if (e.key === 'ArrowLeft') navigateModal(-1);
         }
-      });
-    }
-
-    function setupElasticPull() {
-      const wrapper = document.getElementById('pull-wrapper');
-      let startY = 0;
-      let currentY = 0;
-      let isPulling = false;
-
-      window.addEventListener('touchstart', (e) => {
-        if (window.scrollY === 0) {
-          startY = e.touches[0].clientY;
-          isPulling = true;
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        if (!isPulling) return;
-        currentY = e.touches[0].clientY;
-        const diff = currentY - startY;
-        if (diff > 0 && window.scrollY === 0) {
-          const pullAmount = Math.min(diff * 0.35, 75);
-          wrapper.style.transform = `translateY(${pullAmount}px)`;
-        }
-      }, { passive: true });
-
-      window.addEventListener('touchend', () => {
-        if (!isPulling) return;
-        isPulling = false;
-        wrapper.style.transform = 'translateY(0px)';
       });
     }
   </script>
