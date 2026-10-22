@@ -191,14 +191,14 @@
                   
                   <!-- Slideshow track with 3 visible slots for push-aside animation -->
                   <div id="slideshow-track" class="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(-100%); width: 300%; left: -100%;">
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
-                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover scale-110">
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--card-parchment)]">
+                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover">
                     </div>
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
-                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--card-parchment)]">
+                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                     </div>
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-black/5">
-                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover scale-110">
+                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--card-parchment)]">
+                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover">
                     </div>
                   </div>
 
@@ -445,6 +445,10 @@
       imgPrev.src = prevArt.image;
       imgCurr.src = currArt.image;
       imgNext.src = nextArt.image;
+      
+      imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
 
       document.getElementById('slide-caption').innerText = currArt.title;
 
@@ -482,6 +486,11 @@
         imgPrev.src = prevArt.image;
         imgCurr.src = currArt.image;
         imgNext.src = nextArt.image;
+        
+        imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+        imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+        imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+
         caption.innerText = currArt.title;
         isTransitioning = false;
       }, 700);
