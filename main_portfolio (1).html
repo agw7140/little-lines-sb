@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>little lines. — Aidan's Sketchbook</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    :root {
+      --bg-parchment: #f5f2e9;
+      --card-parchment: #ffffff;
+      --text-ink: #27362a;
+      --text-muted: #536456;
+      --border-parchment: #ded6c5;
+      --accent-green: #2d4030;
+      --accent-sage: #8fa08a;
+    }
+
+    body {
+      background-color: var(--bg-parchment);
+      color: var(--text-ink);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-serif {
+      font-family: 'Cinzel', serif;
+    }
+
+    .font-academic {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .paper-texture {
+      background-image: radial-gradient(#2d4030 0.5px, transparent 0.5px);
+      background-size: 32px 32px;
+      opacity: 0.025;
+    }
+
+    .dramatic-morph {
+      animation: dramaticMorphShape 8s ease-in-out infinite alternate, rotateSlow 22s infinite linear;
+    }
+
+    @keyframes dramaticMorphShape {
+      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+      25% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; }
+      50% { border-radius: 35% 65% 30% 70% / 65% 35% 70% 30%; }
+      75% { border-radius: 60% 40% 60% 40% / 50% 30% 70% 50%; }
+      100% { border-radius: 50% 50% 35% 65% / 45% 65% 35% 55%; }
+    }
+
+    @keyframes rotateSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .counter-rotate {
+      animation: rotateCounter 22s infinite linear;
+    }
+
+    @keyframes rotateCounter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f5f2e9; }
+    ::-webkit-scrollbar-thumb { background: #8fa08a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2d4030; }
+  </style>
+</head>
+<body class="relative min-h-screen overflow-x-hidden antialiased selection:bg-[#8fa08a]/30 selection:text-[#2d4030]">
+
+  <div class="fixed inset-0 pointer-events-none paper-texture z-50"></div>
+
+  <!-- NAVIGATION -->
+  <nav class="sticky top-0 z-40 bg-[#f5f2e9]/90 backdrop-blur-md border-b border-[#ded6c5] transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-[#2d4030] flex items-center justify-center text-white font-serif font-bold text-lg shadow-md">
+          A
+        </div>
+        <div>
+          <span class="font-serif font-bold text-lg text-[#2d4030] tracking-wider block leading-none">little lines.</span>
+          <span class="text-xs text-[#536456] font-academic italic tracking-widest">Aidan's Sketchbook</span>
+        </div>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-1 bg-[#ffffff]/60 p-1.5 rounded-full border border-[#ded6c5] shadow-inner">
+        <button onclick="filterCategory('All')" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 bg-[#2d4030] text-white shadow-sm" data-category="All">All Works</button>
+        <button onclick="filterCategory('Anatomy')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Anatomy">Anatomy & Skulls</button>
+        <button onclick="filterCategory('Portraits')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Portraits">Portraits</button>
+        <button onclick="filterCategory('Concepts')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Concepts">Concepts</button>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <span class="text-xs font-mono text-[#536456] bg-[#ffffff] px-3 py-1.5 rounded-full border border-[#ded6c5]" id="art-count-badge">
+          15 Studies
+        </span>
+        <a href="admin.html" title="Admin Studio" class="w-9 h-9 rounded-full bg-white border border-[#ded6c5] flex items-center justify-center text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors shadow-sm">
+          <i class="fa-solid fa-lock text-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Filter Bar -->
+    <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-[#ded6c5]/50 bg-[#f5f2e9]">
+      <button onclick="filterCategory('All')" class="filter-btn-mobile active whitespace-nowrap px-3 py-1 rounded-full text-xs bg-[#2d4030] text-white" data-category="All">All Works</button>
+      <button onclick="filterCategory('Anatomy')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Anatomy">Anatomy</button>
+      <button onclick="filterCategory('Portraits')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Portraits">Portraits</button>
+      <button onclick="filterCategory('Concepts')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Concepts">Concepts</button>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <div class="inline-flex items-center space-x-2 bg-[#8fa08a]/20 border border-[#8fa08a]/40 px-3 py-1 rounded-full text-xs font-semibold text-[#2d4030] tracking-wide uppercase">
+          <span class="w-2 h-2 rounded-full bg-[#2d4030] animate-pulse"></span>
+          <span>Digital & Pencil Folio • 2026</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#2d4030] leading-tight">
+          Observational <br>
+          <span class="font-academic italic font-normal text-[#536456]">studies & form.</span>
+        </h1>
+
+        <p class="text-base sm:text-lg text-[#536456] font-academic leading-relaxed max-w-2xl">
+          Welcome to my digital gallery. A collection of anatomical breakdowns, expressive pencil portraits, and conceptual form explorations focusing on light, plane structures, and linework.
+        </p>
+
+        <div class="pt-2 flex flex-wrap gap-4 items-center">
+          <a href="#gallery" class="px-6 py-3 bg-[#2d4030] text-white rounded-xl text-sm font-medium hover:bg-[#1f2d22] transition-all shadow-lg flex items-center space-x-2">
+            <span>Explore Collection</span>
+            <i class="fa-solid font-xs fa-arrow-down"></i>
+          </a>
+          <button onclick="openRandomArtwork()" class="px-6 py-3 bg-white border border-[#ded6c5] text-[#2d4030] rounded-xl text-sm font-medium hover:bg-[#ded6c5]/30 transition-all flex items-center space-x-2">
+            <i class="fa-solid fa-dice"></i>
+            <span>Random Study</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 flex justify-center items-center">
+        <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+          <div class="absolute inset-0 rounded-full bg-[#8fa08a]/20 blur-2xl transform scale-110"></div>
+          
+          <div id="slideshow-container" onclick="openCurrentSlideModal()" class="relative w-full h-full dramatic-morph bg-[#2d4030] p-1.5 shadow-2xl cursor-pointer overflow-hidden group">
+            <div class="relative w-full h-full overflow-hidden dramatic-morph">
+              <div id="slideshow-image-wrapper" class="relative w-full h-full counter-rotate transition-opacity duration-700">
+                <img id="slideshow-img" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+              </div>
+              <div class="absolute inset-0 bg-[#2d4030]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div class="counter-rotate">
+                  <div class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-xs font-semibold text-[#2d4030] shadow-lg flex items-center space-x-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Inspect Study</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md border border-[#ded6c5] px-4 py-1.5 rounded-full text-xs text-[#2d4030] shadow-md flex items-center space-x-3 z-10">
+            <button onclick="prevSlide(event)" class="hover:text-[#8fa08a] transition-colors"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="slide-caption" class="font-mono text-[11px] font-medium min-w-[120px] text-center truncate">Featured Study</span>
+            <button onclick="nextSlide(event)" class="hover:text-[#8fa08a] transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[#ded6c5]">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-[#2d4030]">Portfolio Index</h2>
+        <p class="text-sm text-[#536456] font-academic italic mt-1">Select any study to view full resolution details and artist notes.</p>
+      </div>
+      <div class="mt-4 md:mt-0 flex items-center space-x-2">
+        <span class="text-xs text-[#536456]">Sort by:</span>
+        <select id="sort-select" onchange="handleSortChange()" class="bg-white border border-[#ded6c5] text-xs font-medium text-[#2d4030] rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#2d4030]">
+          <option value="default">Default Order</option>
+          <option value="title">Title (A-Z)</option>
+          <option value="category">Category</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <!-- Injected dynamically via JS -->
+    </div>
+  </section>
+
+  <!-- DETAIL MODAL -->
+  <div id="art-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6" onclick="closeModalOnBackdrop(event)">
+    <div class="relative bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[#ded6c5] my-8 flex flex-col md:flex-row" onclick="event.stopPropagation()">
+      <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors flex items-center justify-center shadow-md">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="md:w-3/5 bg-[#1a221b] flex items-center justify-center p-4 min-h-[300px] md:min-h-[500px]">
+        <img id="modal-img" src="" alt="" class="max-h-[75vh] w-auto object-contain rounded-lg shadow-lg">
+      </div>
+
+      <div class="md:w-2/5 p-6 sm:p-8 flex flex-col justify-between bg-[#f5f2e9]/50">
+        <div class="space-y-4">
+          <div>
+            <span id="modal-category" class="inline-block bg-[#2d4030] text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full mb-2">Anatomy</span>
+            <h3 id="modal-title" class="text-2xl font-serif font-bold text-[#2d4030] leading-snug">Artwork Title</h3>
+            <p id="modal-date" class="text-xs text-[#536456] font-mono mt-1">2026</p>
+          </div>
+
+          <hr class="border-[#ded6c5]">
+
+          <div>
+            <h4 class="text-xs font-semibold text-[#2d4030] uppercase tracking-wider mb-1">Medium & Technique</h4>
+            <p id="modal-medium" class="text-sm text-[#536456]">HB Graphite Pencil</p>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-semibold text-[#2d4030] uppercase tracking-wider mb-1">Study Breakdown</h4>
+            <p id="modal-description" class="text-sm text-[#536456] leading-relaxed font-academic">Detailed description here...</p>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-[#ded6c5] mt-6 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <button onclick="navigateModal(-1)" class="p-2 rounded-lg bg-white border border-[#ded6c5] text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="navigateModal(1)" class="p-2 rounded-lg bg-white border border-[#ded6c5] text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+          <span class="text-xs font-mono text-[#536456]" id="modal-counter">1 of 15</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="border-t border-[#ded6c5] bg-white/60 py-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <p class="font-serif font-bold text-sm text-[#2d4030]">little lines. — Aidan's Sketchbook</p>
+      <p class="text-xs text-[#536456]">Curated Digital & Observational Art Portfolio • 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'aidan_sketchbook_artworks';
+    const DEFAULT_ARTWORKS = [
+      { id: 1, title: "Portrait Study 9/9/26 with Signature", category: "Portraits", date: "2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
+      { id: 2, title: "Portrait Study 6/20 HB No Reference", category: "Portraits", date: "2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
+      { id: 3, title: "Man in Coat", category: "Portraits", date: "2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
+      { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
+      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
+      { id: 6, title: "Skull Anatomy Perspective Grid I", category: "Anatomy", date: "2026", medium: "HB Graphite Pencil", image: "PXL_20261017_154914010.jpg", description: "Anatomical skull breakdown utilizing perspective construction lines." },
+      { id: 7, title: "Skull Anatomy Frontal View", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_154917483.jpg", description: "Frontal skull study mapping brow structures and orbital sockets." },
+      { id: 8, title: "Skull Anatomy & Brow Notes", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_154926365.jpg", description: "Detailed anatomical breakdown focusing on brow lines and cranial plates." },
+      { id: 9, title: "Skull Anatomy 3/4 Angle", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261018_022902080~2.jpg", description: "Three-quarter perspective study mapping brow planes." },
+      { id: 10, title: "Surreal Head Study & Melt", category: "Concepts", date: "2026", medium: "Graphite Pencil", image: "PXL_20261017_155016501~2.jpg", description: "Exploration of geometric planar breakdown melting into fluid drops." },
+      { id: 11, title: "Portrait Study (No Ref)", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155022266~2.jpg", description: "Freehand portrait study from imagination." },
+      { id: 12, title: "Portrait Study 6/20", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155457922~2.jpg", description: "Tonal portrait study focusing on soft shadows." },
+      { id: 13, title: "Portrait Study 6/19", category: "Portraits", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155035983~2.jpg", description: "Observational head study capturing curly hair texture." },
+      { id: 14, title: "Geometric Teapot Concept", category: "Concepts", date: "2026", medium: "Graphite Pencil", image: "PXL_20261017_155044822~2.jpg", description: "Combining sharp wireframe construction with shaded curved forms." },
+      { id: 15, title: "Hand Study & Anatomy", category: "Anatomy", date: "2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Detailed graphite shading study of a pointing hand." }
+    ];
+
+    let ARTWORKS = [];
+    let currentCategory = 'All';
+    let currentSlideIndex = 0;
+    let currentModalIndex = 0;
+
+    window.onload = function() {
+      loadArtworks();
+      renderGallery();
+      initSlideshow();
+      setupKeyboardNav();
+    };
+
+    function loadArtworks() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try { ARTWORKS = JSON.parse(stored); } catch (e) { ARTWORKS = [...DEFAULT_ARTWORKS]; }
+      } else {
+        ARTWORKS = [...DEFAULT_ARTWORKS];
+      }
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById('gallery-grid');
+      let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
+      document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
+
+      grid.innerHTML = filtered.map((art) => `
+        <div onclick="openModalById(${art.id})" class="group bg-white rounded-2xl overflow-hidden border border-[#ded6c5] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1 cursor-pointer">
+          <div class="relative overflow-hidden aspect-[4/5] bg-[#1a221b]/5">
+            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3 left-3">
+              <span class="bg-white/90 backdrop-blur-md text-[#2d4030] text-[10px] font-semibold px-2.5 py-1 rounded-full border border-[#ded6c5] shadow-sm">
+                ${art.category}
+              </span>
+            </div>
+          </div>
+          <div class="p-5 flex-grow flex flex-col justify-between">
+            <div>
+              <h3 class="font-serif font-bold text-base text-[#2d4030] group-hover:text-[#8fa08a] transition-colors leading-snug">${art.title}</h3>
+              <p class="text-xs text-[#536456] mt-1 font-mono">${art.medium}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#ded6c5]/50 flex items-center justify-between text-xs text-[#536456]">
+              <span class="font-academic italic">${art.date}</span>
+              <span class="font-medium text-[#2d4030] group-hover:underline">View Details →</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.className = btn.dataset.category === cat 
+          ? "filter-btn active px-4 py-1.5 rounded-full text-xs font-medium bg-[#2d4030] text-white shadow-sm"
+          : "filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030]";
+      });
+      renderGallery();
+    }
+
+    function handleSortChange() {
+      const val = document.getElementById('sort-select').value;
+      if (val === 'title') ARTWORKS.sort((a, b) => a.title.localeCompare(b.title));
+      else if (val === 'category') ARTWORKS.sort((a, b) => a.category.localeCompare(b.category));
+      else ARTWORKS.sort((a, b) => a.id - b.id);
+      renderGallery();
+    }
+
+    function initSlideshow() {
+      updateSlide();
+      setInterval(() => nextSlide(), 4500);
+    }
+
+    function updateSlide() {
+      if (!ARTWORKS.length) return;
+      if (currentSlideIndex >= ARTWORKS.length) currentSlideIndex = 0;
+      const img = document.getElementById('slideshow-img');
+      const caption = document.getElementById('slide-caption');
+      const wrapper = document.getElementById('slideshow-image-wrapper');
+
+      wrapper.classList.add('opacity-0');
+      setTimeout(() => {
+        const art = ARTWORKS[currentSlideIndex];
+        img.src = art.image;
+        img.onerror = () => { img.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+        caption.innerText = art.title;
+        wrapper.classList.remove('opacity-0');
+      }, 300);
+    }
+
+    function nextSlide(e) {
+      if (e) e.stopPropagation();
+      if (!ARTWORKS.length) return;
+      currentSlideIndex = (currentSlideIndex + 1) % ARTWORKS.length;
+      updateSlide();
+    }
+
+    function prevSlide(e) {
+      if (e) e.stopPropagation();
+      if (!ARTWORKS.length) return;
+      currentSlideIndex = (currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length;
+      updateSlide();
+    }
+
+    function openCurrentSlideModal() {
+      if (ARTWORKS.length) openModalById(ARTWORKS[currentSlideIndex].id);
+    }
+
+    function openRandomArtwork() {
+      if (!ARTWORKS.length) return;
+      const randomIndex = Math.floor(Math.random() * ARTWORKS.length);
+      openModalById(ARTWORKS[randomIndex].id);
+    }
+
+    function openModalById(id) {
+      const index = ARTWORKS.findIndex(a => a.id === id);
+      if (index !== -1) {
+        currentModalIndex = index;
+        updateModalContent();
+        document.getElementById('art-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('art-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'art-modal') closeModal();
+    }
+
+    function updateModalContent() {
+      if (!ARTWORKS.length) return;
+      const art = ARTWORKS[currentModalIndex];
+      const img = document.getElementById('modal-img');
+      img.src = art.image;
+      img.onerror = () => { img.src = `https://placehold.co/800x1000/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+      document.getElementById('modal-title').innerText = art.title;
+      document.getElementById('modal-category').innerText = art.category;
+      document.getElementById('modal-date').innerText = art.date;
+      document.getElementById('modal-medium').innerText = art.medium;
+      document.getElementById('modal-description').innerText = art.description;
+      document.getElementById('modal-counter').innerText = `${currentModalIndex + 1} of ${ARTWORKS.length}`;
+    }
+
+    function navigateModal(dir) {
+      if (!ARTWORKS.length) return;
+      currentModalIndex = (currentModalIndex + dir + ARTWORKS.length) % ARTWORKS.length;
+      updateModalContent();
+    }
+
+    function setupKeyboardNav() {
+      document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('art-modal');
+        if (!modal.classList.contains('hidden')) {
+          if (e.key === 'Escape') closeModal();
+          if (e.key === 'ArrowLeft') navigateModal(-1);
+          if (e.key === 'ArrowRight') navigateModal(1);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
