@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>little lines sketchbook</title>
   
+  <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
@@ -29,7 +31,6 @@
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
       touch-action: pan-y;
-      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .font-serif {
@@ -47,8 +48,8 @@
     }
 
     .morph-shape {
-      animation: organicMorph 14s ease-in-out infinite, slowRotate 30s linear infinite;
-      will-change: border-radius, transform;
+      animation: organicMorph 14s ease-in-out infinite;
+      will-change: border-radius;
     }
 
     @keyframes organicMorph {
@@ -64,16 +65,6 @@
       100% { transform: rotate(360deg); }
     }
 
-    .counter-rotate {
-      animation: counterRotate 30s linear infinite;
-      will-change: transform;
-    }
-
-    @keyframes counterRotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(-360deg); }
-    }
-
     .reveal-on-scroll {
       opacity: 0;
       transform: translateY(30px);
@@ -85,15 +76,6 @@
       transform: translateY(0);
     }
 
-    @keyframes gridFadeSlide {
-      0% { opacity: 0; transform: translateY(15px) scale(0.99); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .grid-transition {
-      animation: gridFadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
     @keyframes glowPulse {
       0%, 100% { opacity: 0.3; transform: scale(1); }
       50% { opacity: 0.7; transform: scale(1.1); }
@@ -101,6 +83,20 @@
 
     .glow-bg {
       animation: glowPulse 6s ease-in-out infinite;
+    }
+
+    /* Slideshow push transition styles */
+    .slide-track {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .slide-item {
+      width: 33.333%;
+      height: 100%;
+      flex-shrink: 0;
     }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -111,6 +107,7 @@
 </head>
 <body class="relative min-h-screen antialiased selection:bg-[var(--accent-sage)]/30 selection:text-[var(--accent-green)]">
 
+  <!-- Background Texture -->
   <div class="fixed inset-0 pointer-events-none paper-texture z-50"></div>
 
   <div class="flex flex-col justify-between min-h-screen">
@@ -120,7 +117,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
             <div id="nav-logo-icon" class="w-10 h-10 rounded-full bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-md group-hover:rotate-12 transition-transform duration-300">
-              A
+              L
             </div>
             <div>
               <span id="nav-title" class="font-serif font-bold text-lg text-[var(--text-ink)] tracking-wider block leading-none">little lines sketchbook</span>
@@ -178,22 +175,22 @@
             </div>
           </div>
 
+          <!-- HERO CIRCLE SLIDESHOW WITH UPDIRECTED OBJECT-CONTAIN -->
           <div class="lg:col-span-5 flex justify-center items-center reveal-on-scroll">
             <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
               <div class="absolute inset-0 rounded-full bg-[var(--accent-sage)]/30 blur-3xl glow-bg"></div>
               
-              <div onclick="openCurrentSlideModal()" class="relative w-full h-full morph-shape bg-[var(--accent-green)] p-1.5 shadow-2xl cursor-pointer overflow-hidden group">
-                <div class="relative w-full h-full overflow-hidden rounded-[inherit] bg-[var(--accent-green)] counter-rotate">
-                  
-                  <div id="slideshow-track" class="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(-100%); width: 300%; left: -100%;">
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover">
+              <div onclick="openCurrentSlideModal()" class="relative w-full h-full morph-shape bg-[var(--accent-green)] p-2 shadow-2xl cursor-pointer overflow-hidden group">
+                <div class="relative w-full h-full overflow-hidden rounded-[inherit] bg-[var(--accent-green)]">
+                  <div id="slide-track" class="slide-track">
+                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
+                      <img id="slide-img-prev" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
-                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover">
+                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
+                      <img id="slide-img-curr" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
-                    <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover">
+                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
+                      <img id="slide-img-next" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
                   </div>
 
@@ -216,7 +213,7 @@
         </div>
       </section>
 
-      <!-- GALLERY SECTION (Editorial Masonry Staggered Layout) -->
+      <!-- GALLERY SECTION (Editorial Masonry Staggered Layout with Visible Borders) -->
       <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[var(--border-parchment)] reveal-on-scroll">
           <div>
@@ -307,8 +304,8 @@
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
     const DEFAULT_ARTWORKS = [
-      { id: 1, title: "Portrait Study 9/9/26 with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
-      { id: 2, title: "Portrait Study 6/20 HB No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
+      { id: 1, title: "Portrait Study with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
+      { id: 2, title: "Portrait Study No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
       { id: 3, title: "Man in Coat", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
       { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "Oct 17, 2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
       { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
@@ -329,7 +326,6 @@
     let currentSlideIndex = 0;
     let currentModalIndex = 0;
     let slideInterval = null;
-    let isTransitioning = false;
 
     window.onload = function() {
       loadArtworks();
@@ -353,33 +349,27 @@
 
     function renderGallery() {
       const grid = document.getElementById('gallery-grid');
-      grid.classList.remove('grid-transition');
-      void grid.offsetWidth;
-      grid.classList.add('grid-transition');
-
       let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
-      // Editorial print-like masonry cards (no background container box, pinned directly onto paper)
+      // Editorial masonry cards with visible paper borders
       grid.innerHTML = filtered.map((art, index) => `
-        <div onclick="openModalById(${art.id})" class="group mb-10 break-inside-avoid overflow-hidden transition-all duration-500 flex flex-col justify-between transform hover:-translate-y-1 cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 60}ms;">
-          <div class="relative overflow-hidden bg-transparent pb-3">
-            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-auto object-cover rounded-sm shadow-sm">
-            <div class="absolute top-3 left-3">
+        <div onclick="openModalById(${art.id})" class="group mb-10 break-inside-avoid bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 60}ms;">
+          <div class="relative overflow-hidden bg-[var(--bg-parchment)] rounded-lg mb-3 border border-[var(--border-parchment)]/50">
+            <img src="${art.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}';" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-2.5 left-2.5">
               <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-[var(--border-parchment)] shadow-xs">
                 ${art.category}
               </span>
             </div>
           </div>
-          <div class="px-1 flex-grow flex flex-col justify-between">
-            <div>
-              <h3 class="font-serif font-bold text-sm text-[var(--text-ink)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">${art.title}</h3>
-              <p class="text-xs text-[var(--text-muted)] mt-1 font-mono">${art.medium}</p>
-            </div>
-            <div class="mt-2 flex items-center justify-between text-xs text-[var(--text-muted)]">
-              <span class="font-academic italic">${art.date}</span>
-              <span class="font-medium text-[var(--text-ink)] group-hover:translate-x-1 transition-transform inline-flex items-center space-x-1"><span>Inspect</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
-            </div>
+          <div>
+            <h3 class="font-serif font-bold text-sm text-[var(--text-ink)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">${art.title}</h3>
+            <p class="text-xs text-[var(--text-muted)] mt-1 font-mono">${art.medium}</p>
+          </div>
+          <div class="mt-3 pt-3 border-t border-[var(--border-parchment)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
+            <span class="font-academic italic">${art.date}</span>
+            <span class="font-medium text-[var(--text-ink)] group-hover:translate-x-1 transition-transform inline-flex items-center space-x-1"><span>Inspect</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
           </div>
         </div>
       `).join('');
@@ -425,85 +415,80 @@
 
     function initSlideshow() {
       if (!ARTWORKS.length) return;
-      const imgPrev = document.getElementById('slideshow-img-prev');
-      const imgCurr = document.getElementById('slideshow-img-curr');
-      const imgNext = document.getElementById('slideshow-img-next');
-      const track = document.getElementById('slideshow-track');
-
-      const prevArt = ARTWORKS[(currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length];
-      const currArt = ARTWORKS[currentSlideIndex];
-      const nextArt = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
-
-      track.style.transition = 'none';
-      track.style.transform = 'translateX(-100%)';
-
-      imgPrev.src = prevArt.image;
-      imgCurr.src = currArt.image;
-      imgNext.src = nextArt.image;
-      
-      imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-
-      document.getElementById('slide-caption').innerText = currArt.title;
-
+      updateSlideDisplay();
       if (slideInterval) clearInterval(slideInterval);
       slideInterval = setInterval(() => nextSlide(), 5000);
     }
 
-    function updateSlide(direction = 1) {
-      if (!ARTWORKS.length || isTransitioning) return;
-      isTransitioning = true;
+    function updateSlideDisplay() {
+      const prevIdx = (currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length;
+      const nextIdx = (currentSlideIndex + 1) % ARTWORKS.length;
 
-      const track = document.getElementById('slideshow-track');
-      const imgPrev = document.getElementById('slideshow-img-prev');
-      const imgCurr = document.getElementById('slideshow-img-curr');
-      const imgNext = document.getElementById('slideshow-img-next');
+      const imgPrev = document.getElementById('slide-img-prev');
+      const imgCurr = document.getElementById('slide-img-curr');
+      const imgNext = document.getElementById('slide-img-next');
+      const track = document.getElementById('slide-track');
       const caption = document.getElementById('slide-caption');
 
-      track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-      
-      if (direction === 1) {
-        track.style.transform = 'translateX(-200%)';
-      } else {
-        track.style.transform = 'translateX(0%)';
+      const artPrev = ARTWORKS[prevIdx];
+      const artCurr = ARTWORKS[currentSlideIndex];
+      const artNext = ARTWORKS[nextIdx];
+
+      if (imgPrev) {
+        imgPrev.src = artPrev.image;
+        imgPrev.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      }
+      if (imgCurr) {
+        imgCurr.src = artCurr.image;
+        imgCurr.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      }
+      if (imgNext) {
+        imgNext.src = artNext.image;
+        imgNext.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
       }
 
-      setTimeout(() => {
-        currentSlideIndex = (currentSlideIndex + direction + ARTWORKS.length) % ARTWORKS.length;
-        const currArt = ARTWORKS[currentSlideIndex];
-        const prevArt = ARTWORKS[(currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length];
-        const nextArt = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
-
+      if (track) {
         track.style.transition = 'none';
-        track.style.transform = 'translateX(-100%)';
+        track.style.transform = 'translateX(-33.333%)';
+        track.offsetHeight;
+      }
 
-        imgPrev.src = prevArt.image;
-        imgCurr.src = currArt.image;
-        imgNext.src = nextArt.image;
-        
-        imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-
-        caption.innerText = currArt.title;
-        isTransitioning = false;
-      }, 700);
-
-      if (slideInterval) {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(() => nextSlide(), 5000);
+      if (caption) {
+        caption.innerText = artCurr.title;
       }
     }
 
     function nextSlide(e) {
       if (e) e.stopPropagation();
-      updateSlide(1);
+      const track = document.getElementById('slide-track');
+      if (track) {
+        track.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+        track.style.transform = 'translateX(-66.666%)';
+      }
+      setTimeout(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % ARTWORKS.length;
+        updateSlideDisplay();
+      }, 600);
+      resetSlideInterval();
     }
 
     function prevSlide(e) {
       if (e) e.stopPropagation();
-      updateSlide(-1);
+      const track = document.getElementById('slide-track');
+      if (track) {
+        track.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+        track.style.transform = 'translateX(0%)';
+      }
+      setTimeout(() => {
+        currentSlideIndex = (currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length;
+        updateSlideDisplay();
+      }, 600);
+      resetSlideInterval();
+    }
+
+    function resetSlideInterval() {
+      if (slideInterval) clearInterval(slideInterval);
+      slideInterval = setInterval(() => nextSlide(), 5000);
     }
 
     function openCurrentSlideModal() {
@@ -532,7 +517,7 @@
       const art = ARTWORKS[currentModalIndex];
       const img = document.getElementById('modal-img');
       img.src = art.image;
-      img.onerror = () => { img.src = `https://placehold.co/800x800/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+      img.onerror = function() { this.onerror=null; this.src=`https://placehold.co/800x800/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
 
       document.getElementById('modal-title').innerText = art.title;
       document.getElementById('modal-category').innerText = art.category;
@@ -591,4 +576,25 @@
         });
       }, { threshold: 0.1 });
 
-      document.querySelectorAll('.reveal
+      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => observer.observe(el));
+    }
+
+    function setupKeyboardNav() {
+      document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('art-modal');
+        const isModalOpen = modal && !modal.classList.contains('hidden');
+
+        if (e.key === 'ArrowRight') {
+          if (isModalOpen) navigateModal(1);
+          else nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          if (isModalOpen) navigateModal(-1);
+          else prevSlide();
+        } else if (e.key === 'Escape' && isModalOpen) {
+          closeModal();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
