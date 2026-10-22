@@ -360,11 +360,10 @@
       let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
-      // Editorial print-like masonry cards (no background container box, pinned directly onto paper)
       grid.innerHTML = filtered.map((art, index) => `
         <div onclick="openModalById(${art.id})" class="group mb-10 break-inside-avoid overflow-hidden transition-all duration-500 flex flex-col justify-between transform hover:-translate-y-1 cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 60}ms;">
           <div class="relative overflow-hidden bg-transparent pb-3">
-            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-auto object-cover rounded-sm shadow-sm">
+            <img src="${art.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}';" alt="${art.title}" class="w-full h-auto object-cover rounded-sm shadow-sm">
             <div class="absolute top-3 left-3">
               <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-[var(--border-parchment)] shadow-xs">
                 ${art.category}
@@ -441,9 +440,9 @@
       imgCurr.src = currArt.image;
       imgNext.src = nextArt.image;
       
-      imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      imgPrev.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      imgCurr.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+      imgNext.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
 
       document.getElementById('slide-caption').innerText = currArt.title;
 
@@ -482,9 +481,9 @@
         imgCurr.src = currArt.image;
         imgNext.src = nextArt.image;
         
-        imgPrev.onerror = () => { imgPrev.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgCurr.onerror = () => { imgCurr.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgNext.onerror = () => { imgNext.src = 'https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+        imgPrev.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+        imgCurr.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
+        imgNext.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
 
         caption.innerText = currArt.title;
         isTransitioning = false;
@@ -532,7 +531,7 @@
       const art = ARTWORKS[currentModalIndex];
       const img = document.getElementById('modal-img');
       img.src = art.image;
-      img.onerror = () => { img.src = `https://placehold.co/800x800/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+      img.onerror = function() { this.onerror=null; this.src=`https://placehold.co/800x800/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
 
       document.getElementById('modal-title').innerText = art.title;
       document.getElementById('modal-category').innerText = art.category;
@@ -591,4 +590,25 @@
         });
       }, { threshold: 0.1 });
 
-      document.querySelectorAll('.reveal
+      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => observer.observe(el));
+    }
+
+    function setupKeyboardNav() {
+      document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('art-modal');
+        const isModalOpen = modal && !modal.classList.contains('hidden');
+
+        if (e.key === 'ArrowRight') {
+          if (isModalOpen) navigateModal(1);
+          else nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          if (isModalOpen) navigateModal(-1);
+          else prevSlide();
+        } else if (e.key === 'Escape' && isModalOpen) {
+          closeModal();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
