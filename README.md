@@ -1,2 +1,2 @@
-# little-lines
+# little lines sketchbook
 home for my drawings
