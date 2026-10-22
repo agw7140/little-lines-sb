@@ -29,7 +29,6 @@
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
       touch-action: pan-y;
-      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .font-serif {
@@ -83,15 +82,6 @@
     .reveal-on-scroll.is-revealed {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    @keyframes gridFadeSlide {
-      0% { opacity: 0; transform: translateY(15px) scale(0.99); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .grid-transition {
-      animation: gridFadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes glowPulse {
@@ -187,13 +177,13 @@
                   
                   <div id="slideshow-track" class="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(-100%); width: 300%; left: -100%;">
                     <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover">
+                      <img id="slideshow-img-prev" src="" alt="Previous Study" class="w-full h-full object-cover bg-[var(--accent-green)]" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
                     <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
-                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover">
+                      <img id="slideshow-img-curr" src="" alt="Current Study" class="w-full h-full object-cover bg-[var(--accent-green)]" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
                     <div class="w-1/3 h-full flex-shrink-0 relative overflow-hidden bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover">
+                      <img id="slideshow-img-next" src="" alt="Next Study" class="w-full h-full object-cover bg-[var(--accent-green)]" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
                   </div>
 
@@ -307,8 +297,8 @@
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
     const DEFAULT_ARTWORKS = [
-      { id: 1, title: "Portrait Study 9/9/26 with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
-      { id: 2, title: "Portrait Study 6/20 HB No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
+      { id: 1, title: "Portrait Study with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
+      { id: 2, title: "Portrait Study No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
       { id: 3, title: "Man in Coat", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
       { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "Oct 17, 2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
       { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
@@ -353,10 +343,6 @@
 
     function renderGallery() {
       const grid = document.getElementById('gallery-grid');
-      grid.classList.remove('grid-transition');
-      void grid.offsetWidth;
-      grid.classList.add('grid-transition');
-
       let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
@@ -439,10 +425,6 @@
       imgPrev.src = prevArt.image;
       imgCurr.src = currArt.image;
       imgNext.src = nextArt.image;
-      
-      imgPrev.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgCurr.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-      imgNext.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
 
       document.getElementById('slide-caption').innerText = currArt.title;
 
@@ -480,10 +462,6 @@
         imgPrev.src = prevArt.image;
         imgCurr.src = currArt.image;
         imgNext.src = nextArt.image;
-        
-        imgPrev.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgCurr.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
-        imgNext.onerror = function() { this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study'; };
 
         caption.innerText = currArt.title;
         isTransitioning = false;
@@ -601,14 +579,4 @@
         if (e.key === 'ArrowRight') {
           if (isModalOpen) navigateModal(1);
           else nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-          if (isModalOpen) navigateModal(-1);
-          else prevSlide();
-        } else if (e.key === 'Escape' && isModalOpen) {
-          closeModal();
-        }
-      });
-    }
-  </script>
-</body>
-</html>
+        } else if (e
