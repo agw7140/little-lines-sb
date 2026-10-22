@@ -23,10 +23,33 @@
       --accent-sage: #8fa08a;
     }
 
+    body.theme-charcoal {
+      --bg-parchment: #181c19;
+      --card-parchment: #222924;
+      --text-ink: #e5ede7;
+      --text-muted: #a3b3a7;
+      --border-parchment: #2e3b33;
+      --accent-green: #8fa08a;
+      --accent-sage: #536456;
+    }
+
+    body.theme-blueprint {
+      --bg-parchment: #1b263b;
+      --card-parchment: #22304a;
+      --text-ink: #e0f2fe;
+      --text-muted: #93c5fd;
+      --border-parchment: #2d4360;
+      --accent-green: #38bdf8;
+      --accent-sage: #60a5fa;
+    }
+
     body {
       background-color: var(--bg-parchment);
       color: var(--text-ink);
       font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      touch-action: pan-y;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     .font-serif {
@@ -38,221 +61,309 @@
     }
 
     .paper-texture {
-      background-image: radial-gradient(#2d4030 0.5px, transparent 0.5px);
-      background-size: 32px 32px;
-      opacity: 0.025;
+      background-image: radial-gradient(var(--accent-green) 0.6px, transparent 0.6px);
+      background-size: 36px 36px;
+      opacity: 0.04;
     }
 
-    .dramatic-morph {
-      animation: dramaticMorphShape 8s ease-in-out infinite alternate, rotateSlow 22s infinite linear;
+    /* Elastic Pull / Rubber-band spring wrapper */
+    #pull-wrapper {
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: transform;
+      min-height: 100vh;
     }
 
-    @keyframes dramaticMorphShape {
-      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-      25% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; }
-      50% { border-radius: 35% 65% 30% 70% / 65% 35% 70% 30%; }
-      75% { border-radius: 60% 40% 60% 40% / 50% 30% 70% 50%; }
-      100% { border-radius: 50% 50% 35% 65% / 45% 65% 35% 55%; }
+    /* Highly Emphasized Organic Morphing Shape Container with subtle continuous rotation */
+    .morph-shape {
+      animation: organicMorph 12s ease-in-out infinite, slowRotate 24s linear infinite;
+      will-change: border-radius, transform;
     }
 
-    @keyframes rotateSlow {
+    @keyframes organicMorph {
+      0% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+      25% {
+        border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+      }
+      50% {
+        border-radius: 40% 60% 50% 50% / 55% 45% 55% 45%;
+      }
+      75% {
+        border-radius: 73% 27% 44% 56% / 49% 73% 27% 51%;
+      }
+      100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+    }
+
+    @keyframes slowRotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
+    /* Counter-rotation for inner image so it remains upright and stable */
     .counter-rotate {
-      animation: rotateCounter 22s infinite linear;
+      animation: counterRotate 24s linear infinite;
+      will-change: transform;
     }
 
-    @keyframes rotateCounter {
+    @keyframes counterRotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(-360deg); }
     }
 
+    /* Cool Scroll & Category Transition Animations */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-on-scroll.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Category Grid Transition Effect */
+    @keyframes gridFadeSlide {
+      0% {
+        opacity: 0;
+        transform: translateY(15px) scale(0.99);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .grid-transition {
+      animation: gridFadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Glowing pulse background */
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
+    }
+
+    .glow-bg {
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+
     ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f5f2e9; }
-    ::-webkit-scrollbar-thumb { background: #8fa08a; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #2d4030; }
+    ::-webkit-scrollbar-track { background: var(--bg-parchment); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-sage); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-green); }
   </style>
 </head>
-<body class="relative min-h-screen overflow-x-hidden antialiased selection:bg-[#8fa08a]/30 selection:text-[#2d4030]">
+<body class="relative min-h-screen antialiased selection:bg-[var(--accent-sage)]/30 selection:text-[var(--accent-green)]">
 
   <div class="fixed inset-0 pointer-events-none paper-texture z-50"></div>
 
-  <!-- NAVIGATION -->
-  <nav class="sticky top-0 z-40 bg-[#f5f2e9]/90 backdrop-blur-md border-b border-[#ded6c5] transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-[#2d4030] flex items-center justify-center text-white font-serif font-bold text-lg shadow-md">
-          A
-        </div>
-        <div>
-          <span class="font-serif font-bold text-lg text-[#2d4030] tracking-wider block leading-none">little lines.</span>
-          <span class="text-xs text-[#536456] font-academic italic tracking-widest">Aidan's Sketchbook</span>
-        </div>
-      </div>
-
-      <div class="hidden md:flex items-center space-x-1 bg-[#ffffff]/60 p-1.5 rounded-full border border-[#ded6c5] shadow-inner">
-        <button onclick="filterCategory('All')" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 bg-[#2d4030] text-white shadow-sm" data-category="All">All Works</button>
-        <button onclick="filterCategory('Anatomy')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Anatomy">Anatomy & Skulls</button>
-        <button onclick="filterCategory('Portraits')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Portraits">Portraits</button>
-        <button onclick="filterCategory('Concepts')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030] transition-all duration-200" data-category="Concepts">Concepts</button>
-      </div>
-
-      <div class="flex items-center space-x-3">
-        <span class="text-xs font-mono text-[#536456] bg-[#ffffff] px-3 py-1.5 rounded-full border border-[#ded6c5]" id="art-count-badge">
-          15 Studies
-        </span>
-        <a href="admin.html" title="Admin Studio" class="w-9 h-9 rounded-full bg-white border border-[#ded6c5] flex items-center justify-center text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors shadow-sm">
-          <i class="fa-solid fa-lock text-xs"></i>
-        </a>
-      </div>
-    </div>
-
-    <!-- Mobile Filter Bar -->
-    <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-[#ded6c5]/50 bg-[#f5f2e9]">
-      <button onclick="filterCategory('All')" class="filter-btn-mobile active whitespace-nowrap px-3 py-1 rounded-full text-xs bg-[#2d4030] text-white" data-category="All">All Works</button>
-      <button onclick="filterCategory('Anatomy')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Anatomy">Anatomy</button>
-      <button onclick="filterCategory('Portraits')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Portraits">Portraits</button>
-      <button onclick="filterCategory('Concepts')" class="filter-btn-mobile whitespace-nowrap px-3 py-1 rounded-full text-xs text-[#536456] bg-white border border-[#ded6c5]" data-category="Concepts">Concepts</button>
-    </div>
-  </nav>
-
-  <!-- HERO SECTION -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-7 space-y-6">
-        <div class="inline-flex items-center space-x-2 bg-[#8fa08a]/20 border border-[#8fa08a]/40 px-3 py-1 rounded-full text-xs font-semibold text-[#2d4030] tracking-wide uppercase">
-          <span class="w-2 h-2 rounded-full bg-[#2d4030] animate-pulse"></span>
-          <span>Digital & Pencil Folio • 2026</span>
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#2d4030] leading-tight">
-          Observational <br>
-          <span class="font-academic italic font-normal text-[#536456]">studies & form.</span>
-        </h1>
-
-        <p class="text-base sm:text-lg text-[#536456] font-academic leading-relaxed max-w-2xl">
-          Welcome to my digital gallery. A collection of anatomical breakdowns, expressive pencil portraits, and conceptual form explorations focusing on light, plane structures, and linework.
-        </p>
-
-        <div class="pt-2 flex flex-wrap gap-4 items-center">
-          <a href="#gallery" class="px-6 py-3 bg-[#2d4030] text-white rounded-xl text-sm font-medium hover:bg-[#1f2d22] transition-all shadow-lg flex items-center space-x-2">
-            <span>Explore Collection</span>
-            <i class="fa-solid font-xs fa-arrow-down"></i>
-          </a>
-          <button onclick="openRandomArtwork()" class="px-6 py-3 bg-white border border-[#ded6c5] text-[#2d4030] rounded-xl text-sm font-medium hover:bg-[#ded6c5]/30 transition-all flex items-center space-x-2">
-            <i class="fa-solid fa-dice"></i>
-            <span>Random Study</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="lg:col-span-5 flex justify-center items-center">
-        <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
-          <div class="absolute inset-0 rounded-full bg-[#8fa08a]/20 blur-2xl transform scale-110"></div>
-          
-          <div id="slideshow-container" onclick="openCurrentSlideModal()" class="relative w-full h-full dramatic-morph bg-[#2d4030] p-1.5 shadow-2xl cursor-pointer overflow-hidden group">
-            <div class="relative w-full h-full overflow-hidden dramatic-morph">
-              <div id="slideshow-image-wrapper" class="relative w-full h-full counter-rotate transition-opacity duration-700">
-                <img id="slideshow-img" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
-              </div>
-              <div class="absolute inset-0 bg-[#2d4030]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div class="counter-rotate">
-                  <div class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-xs font-semibold text-[#2d4030] shadow-lg flex items-center space-x-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Inspect Study</span>
-                  </div>
-                </div>
-              </div>
+  <!-- ELASTIC PULL WRAPPER -->
+  <div id="pull-wrapper" class="flex flex-col justify-between">
+    <div>
+      <!-- NAVIGATION -->
+      <nav class="sticky top-0 z-40 bg-[var(--bg-parchment)]/90 backdrop-blur-md border-b border-[var(--border-parchment)] transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="w-10 h-10 rounded-full bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-md group-hover:rotate-12 transition-transform duration-300">
+              A
+            </div>
+            <div>
+              <span class="font-serif font-bold text-lg text-[var(--text-ink)] tracking-wider block leading-none">little lines.</span>
+              <span class="text-xs text-[var(--text-muted)] font-academic italic tracking-widest">Aidan's Sketchbook</span>
             </div>
           </div>
 
-          <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-md border border-[#ded6c5] px-4 py-1.5 rounded-full text-xs text-[#2d4030] shadow-md flex items-center space-x-3 z-10">
-            <button onclick="prevSlide(event)" class="hover:text-[#8fa08a] transition-colors"><i class="fa-solid fa-chevron-left"></i></button>
-            <span id="slide-caption" class="font-mono text-[11px] font-medium min-w-[120px] text-center truncate">Featured Study</span>
-            <button onclick="nextSlide(event)" class="hover:text-[#8fa08a] transition-colors"><i class="fa-solid fa-chevron-right"></i></button>
+          <!-- DESKTOP FILTER BUTTONS WITH MOMENTUM SLIDER -->
+          <div class="hidden md:flex items-center space-x-1 bg-[var(--card-parchment)] p-1.5 rounded-full border border-[var(--border-parchment)] shadow-inner relative" id="filter-container">
+            <div id="filter-slider" class="absolute top-1.5 bottom-1.5 bg-[var(--accent-green)] rounded-full shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none" style="left: 6px; width: 85px;"></div>
+            
+            <button onclick="filterCategory('All', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium transition-colors duration-300 text-[var(--bg-parchment)]" data-category="All">All Works</button>
+            <button onclick="filterCategory('Anatomy', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Anatomy">Anatomy & Skulls</button>
+            <button onclick="filterCategory('Portraits', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Portraits">Portraits</button>
+            <button onclick="filterCategory('Concepts', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Concepts">Concepts</button>
+          </div>
+
+          <!-- TINY TOOLS (ASMR AUDIO TOGGLE + THEME PICKER) -->
+          <div class="flex items-center space-x-2">
+            <button onclick="togglePencilSound()" id="sound-btn" title="Toggle ASMR Pencil Scribble Audio" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 shadow-sm text-xs">
+              <i class="fa-solid fa-volume-xmark" id="sound-icon"></i>
+            </button>
+
+            <button onclick="cycleTheme()" title="Switch Studio Tone" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 shadow-sm text-xs">
+              <i class="fa-solid fa-palette"></i>
+            </button>
+
+            <span class="hidden sm:inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--card-parchment)] px-3 py-1.5 rounded-full border border-[var(--border-parchment)] shadow-sm" id="art-count-badge">
+              15 Studies
+            </span>
+            <a href="upload.html" title="Admin Studio" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] hover:rotate-90 transition-all duration-300 shadow-sm">
+              <i class="fa-solid fa-lock text-xs"></i>
+            </a>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- GALLERY SECTION -->
-  <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[#ded6c5]">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-[#2d4030]">Portfolio Index</h2>
-        <p class="text-sm text-[#536456] font-academic italic mt-1">Select any study to view full resolution details and artist notes.</p>
-      </div>
-      <div class="mt-4 md:mt-0 flex items-center space-x-2">
-        <span class="text-xs text-[#536456]">Sort by:</span>
-        <select id="sort-select" onchange="handleSortChange()" class="bg-white border border-[#ded6c5] text-xs font-medium text-[#2d4030] rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#2d4030]">
-          <option value="default">Default Order</option>
-          <option value="title">Title (A-Z)</option>
-          <option value="category">Category</option>
-        </select>
-      </div>
+        <!-- Mobile Filter Bar -->
+        <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-[var(--border-parchment)]/50 bg-[var(--bg-parchment)] scrollbar-none">
+          <button onclick="filterCategory('All')" class="filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] transition-all shadow-sm" data-category="All">All Works</button>
+          <button onclick="filterCategory('Anatomy')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Anatomy">Anatomy</button>
+          <button onclick="filterCategory('Portraits')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Portraits">Portraits</button>
+          <button onclick="filterCategory('Concepts')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Concepts">Concepts</button>
+        </div>
+      </nav>
+
+      <!-- HERO SECTION -->
+      <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-7 space-y-6 reveal-on-scroll">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[var(--text-ink)] leading-tight">
+              Observational <br>
+              <span class="font-academic italic font-normal text-[var(--text-muted)] transition-all hover:text-[var(--text-ink)]">studies & form.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-[var(--text-muted)] font-academic leading-relaxed max-w-2xl">
+              Welcome to my digital gallery. A collection of anatomical breakdowns, expressive pencil portraits, and conceptual form explorations focusing on light, plane structures, and linework.
+            </p>
+
+            <div class="pt-2 flex flex-wrap gap-4 items-center">
+              <a href="#gallery" class="px-6 py-3 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-xl text-sm font-medium hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-xl flex items-center space-x-2">
+                <span>Explore Collection</span>
+                <i class="fa-solid font-xs fa-arrow-down animate-bounce"></i>
+              </a>
+              <button onclick="openRandomArtwork()" class="px-6 py-3 bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] rounded-xl text-sm font-medium hover:bg-[var(--border-parchment)]/40 hover:scale-105 transition-all duration-300 shadow-sm flex items-center space-x-2">
+                <i class="fa-solid fa-dice hover:rotate-180 transition-transform duration-500"></i>
+                <span>Random Study</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex justify-center items-center reveal-on-scroll">
+            <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
+              <div class="absolute inset-0 rounded-full bg-[var(--accent-sage)]/30 blur-3xl glow-bg"></div>
+              
+              <!-- MORPHING SHAPE FRAME WITH ROTATING OUTER FRAME AND COUNTER-ROTATING STABLE IMAGE -->
+              <div onclick="openCurrentSlideModal()" class="relative w-full h-full morph-shape bg-[var(--accent-green)] p-1.5 shadow-2xl cursor-pointer overflow-hidden group">
+                <div class="relative w-full h-full overflow-hidden morph-shape bg-[var(--card-parchment)] counter-rotate">
+                  <div id="slideshow-track" class="relative w-full h-full flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]" style="transform: translateX(0%); width: 200%;">
+                    <div class="w-1/2 h-full flex-shrink-0">
+                      <img id="slideshow-img-1" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                    </div>
+                    <div class="w-1/2 h-full flex-shrink-0">
+                      <img id="slideshow-img-2" src="" alt="Featured Study" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700">
+                    </div>
+                  </div>
+                  <div class="absolute inset-0 bg-[var(--accent-green)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                    <div class="bg-[var(--card-parchment)]/95 backdrop-blur-md px-4 py-2 rounded-full text-xs font-semibold text-[var(--text-ink)] shadow-xl flex items-center space-x-2 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                      <span>Inspect Study</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAPTION BAR WITH FIXED ARROWS -->
+              <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-[var(--card-parchment)]/95 backdrop-blur-md border border-[var(--border-parchment)] px-3 py-1.5 rounded-full text-xs text-[var(--text-ink)] shadow-lg flex items-center justify-between w-64 z-10">
+                <button onclick="prevSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] hover:scale-125 transition-all flex-shrink-0"><i class="fa-solid fa-chevron-left"></i></button>
+                <span id="slide-caption" class="font-mono text-[11px] font-medium truncate px-1 text-center flex-grow">Featured Study</span>
+                <button onclick="nextSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] hover:scale-125 transition-all flex-shrink-0"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALLERY SECTION -->
+      <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[var(--border-parchment)] reveal-on-scroll">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-[var(--text-ink)]">Portfolio Index</h2>
+            <p class="text-sm text-[var(--text-muted)] font-academic italic mt-1">Select any study to view full resolution details and artist notes.</p>
+          </div>
+          <div class="mt-4 md:mt-0 flex items-center space-x-2">
+            <span class="text-xs text-[var(--text-muted)]">Sort by:</span>
+            <select id="sort-select" onchange="handleSortChange()" class="bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-xs font-medium text-[var(--text-ink)] rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)] shadow-sm cursor-pointer">
+              <option value="default">Default Order</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Gallery items rendered dynamically -->
+        </div>
+      </section>
     </div>
 
-    <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      <!-- Injected dynamically via JS -->
-    </div>
-  </section>
+    <!-- FOOTER -->
+    <footer class="border-t border-[var(--border-parchment)] py-12 bg-[var(--bg-parchment)] mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[var(--text-muted)]">
+        <p>© 2026 Aidan. All observational studies and linework reserved.</p>
+        <div class="flex space-x-6 mt-4 sm:mt-0">
+          <a href="upload.html" class="hover:text-[var(--text-ink)] transition-colors">Admin Studio</a>
+          <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="hover:text-[var(--text-ink)] transition-colors">Back to Top ↑</a>
+        </div>
+      </div>
+    </footer>
+  </div>
 
   <!-- DETAIL MODAL -->
-  <div id="art-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6" onclick="closeModalOnBackdrop(event)">
-    <div class="relative bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[#ded6c5] my-8 flex flex-col md:flex-row" onclick="event.stopPropagation()">
-      <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors flex items-center justify-center shadow-md">
-        <i class="fa-solid fa-xmark text-lg"></i>
+  <div id="art-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0 overflow-hidden" onclick="closeModalOnBackdrop(event)">
+    <div class="relative bg-[var(--card-parchment)] rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[var(--border-parchment)] my-8 flex flex-col md:flex-row transform scale-95 transition-all duration-300 z-20" id="modal-card" onclick="event.stopPropagation()">
+      <button onclick="closeModal()" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-[var(--card-parchment)]/90 backdrop-blur-md text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 flex items-center justify-center shadow-md">
+        <i class="fa-solid fa-xmark text-lg hover:rotate-90 transition-transform"></i>
       </button>
 
-      <div class="md:w-3/5 bg-[#1a221b] flex items-center justify-center p-4 min-h-[300px] md:min-h-[500px]">
-        <img id="modal-img" src="" alt="" class="max-h-[75vh] w-auto object-contain rounded-lg shadow-lg">
+      <div class="md:w-3/5 bg-black/40 flex items-center justify-center p-4 h-[380px] md:h-[540px] relative overflow-hidden flex-shrink-0">
+        <div id="modal-img-container" class="relative w-full h-full flex items-center justify-center transition-opacity duration-300">
+          <img id="modal-img" src="" alt="" class="max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl transition-all duration-300">
+        </div>
       </div>
 
-      <div class="md:w-2/5 p-6 sm:p-8 flex flex-col justify-between bg-[#f5f2e9]/50">
+      <div class="md:w-2/5 p-6 sm:p-8 flex flex-col justify-between bg-[var(--bg-parchment)]/60">
         <div class="space-y-4">
           <div>
-            <span id="modal-category" class="inline-block bg-[#2d4030] text-white text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full mb-2">Anatomy</span>
-            <h3 id="modal-title" class="text-2xl font-serif font-bold text-[#2d4030] leading-snug">Artwork Title</h3>
-            <p id="modal-date" class="text-xs text-[#536456] font-mono mt-1">2026</p>
+            <div class="flex items-center justify-between mb-2">
+              <span id="modal-category" class="inline-block bg-[var(--accent-green)] text-[var(--bg-parchment)] text-[10px] font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">Anatomy</span>
+              <button onclick="copyStudyLink()" title="Copy study link" class="text-xs text-[var(--text-muted)] hover:text-[var(--text-ink)] flex items-center space-x-1 bg-[var(--card-parchment)] px-2.5 py-1 rounded-full border border-[var(--border-parchment)]">
+                <i class="fa-solid fa-link text-[10px]"></i>
+                <span id="copy-label">Share</span>
+              </button>
+            </div>
+            <h3 id="modal-title" class="text-2xl font-serif font-bold text-[var(--text-ink)] leading-snug">Artwork Title</h3>
+            <p id="modal-date" class="text-xs text-[var(--text-muted)] font-mono mt-1">2026</p>
           </div>
 
-          <hr class="border-[#ded6c5]">
+          <hr class="border-[var(--border-parchment)]">
 
           <div>
-            <h4 class="text-xs font-semibold text-[#2d4030] uppercase tracking-wider mb-1">Medium & Technique</h4>
-            <p id="modal-medium" class="text-sm text-[#536456]">HB Graphite Pencil</p>
+            <h4 class="text-xs font-semibold text-[var(--text-ink)] uppercase tracking-wider mb-1">Medium & Technique</h4>
+            <p id="modal-medium" class="text-sm text-[var(--text-muted)]">HB Graphite Pencil</p>
           </div>
 
           <div>
-            <h4 class="text-xs font-semibold text-[#2d4030] uppercase tracking-wider mb-1">Study Breakdown</h4>
-            <p id="modal-description" class="text-sm text-[#536456] leading-relaxed font-academic">Detailed description here...</p>
+            <h4 class="text-xs font-semibold text-[var(--text-ink)] uppercase tracking-wider mb-1">Study Breakdown</h4>
+            <p id="modal-description" class="text-sm text-[var(--text-muted)] leading-relaxed font-academic">Detailed description here...</p>
           </div>
         </div>
 
-        <div class="pt-6 border-t border-[#ded6c5] mt-6 flex items-center justify-between">
+        <div class="pt-6 border-t border-[var(--border-parchment)] mt-6 flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <button onclick="navigateModal(-1)" class="p-2 rounded-lg bg-white border border-[#ded6c5] text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors">
+            <button onclick="navigateModal(-1)" class="p-2.5 rounded-xl bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-sm">
               <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button onclick="navigateModal(1)" class="p-2 rounded-lg bg-white border border-[#ded6c5] text-[#2d4030] hover:bg-[#2d4030] hover:text-white transition-colors">
+            <button onclick="navigateModal(1)" class="p-2.5 rounded-xl bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-sm">
               <i class="fa-solid fa-chevron-right"></i>
             </button>
           </div>
-          <span class="text-xs font-mono text-[#536456]" id="modal-counter">1 of 15</span>
+          <span class="text-xs font-mono text-[var(--text-muted)]" id="modal-counter">1 of 15</span>
         </div>
       </div>
     </div>
   </div>
-
-  <footer class="border-t border-[#ded6c5] bg-white/60 py-8 mt-16">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-      <p class="font-serif font-bold text-sm text-[#2d4030]">little lines. — Aidan's Sketchbook</p>
-      <p class="text-xs text-[#536456]">Curated Digital & Observational Art Portfolio • 2026</p>
-    </div>
-  </footer>
 
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
@@ -278,12 +389,21 @@
     let currentCategory = 'All';
     let currentSlideIndex = 0;
     let currentModalIndex = 0;
+    let soundEnabled = false;
+    let audioCtx = null;
+    let themes = ['', 'theme-charcoal', 'theme-blueprint'];
+    let currentThemeIdx = 0;
 
     window.onload = function() {
       loadArtworks();
       renderGallery();
       initSlideshow();
+      setupScrollReveal();
       setupKeyboardNav();
+      setupElasticPull();
+      
+      const defaultBtn = document.querySelector('.filter-btn[data-category="All"]');
+      if (defaultBtn) updateSliderPosition(defaultBtn);
     };
 
     function loadArtworks() {
@@ -297,44 +417,70 @@
 
     function renderGallery() {
       const grid = document.getElementById('gallery-grid');
+      grid.classList.remove('grid-transition');
+      void grid.offsetWidth;
+      grid.classList.add('grid-transition');
+
       let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
-      grid.innerHTML = filtered.map((art) => `
-        <div onclick="openModalById(${art.id})" class="group bg-white rounded-2xl overflow-hidden border border-[#ded6c5] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1 cursor-pointer">
-          <div class="relative overflow-hidden aspect-[4/5] bg-[#1a221b]/5">
-            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      grid.innerHTML = filtered.map((art, index) => `
+        <div onclick="openModalById(${art.id})" class="group bg-[var(--card-parchment)] rounded-3xl overflow-hidden border border-[var(--border-parchment)] shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col justify-between transform hover:-translate-y-2 cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 80}ms;">
+          <div class="relative overflow-hidden aspect-[4/5] bg-black/5">
+            <img src="${art.image}" onerror="this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}'" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             <div class="absolute top-3 left-3">
-              <span class="bg-white/90 backdrop-blur-md text-[#2d4030] text-[10px] font-semibold px-2.5 py-1 rounded-full border border-[#ded6c5] shadow-sm">
+              <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-3 py-1 rounded-full border border-[var(--border-parchment)] shadow-sm">
                 ${art.category}
               </span>
             </div>
           </div>
-          <div class="p-5 flex-grow flex flex-col justify-between">
+          <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
-              <h3 class="font-serif font-bold text-base text-[#2d4030] group-hover:text-[#8fa08a] transition-colors leading-snug">${art.title}</h3>
-              <p class="text-xs text-[#536456] mt-1 font-mono">${art.medium}</p>
+              <h3 class="font-serif font-bold text-base text-[var(--text-ink)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">${art.title}</h3>
+              <p class="text-xs text-[var(--text-muted)] mt-1.5 font-mono">${art.medium}</p>
             </div>
-            <div class="mt-4 pt-3 border-t border-[#ded6c5]/50 flex items-center justify-between text-xs text-[#536456]">
+            <div class="mt-5 pt-3 border-t border-[var(--border-parchment)]/50 flex items-center justify-between text-xs text-[var(--text-muted)]">
               <span class="font-academic italic">${art.date}</span>
-              <span class="font-medium text-[#2d4030] group-hover:underline">View Details →</span>
+              <span class="font-medium text-[var(--text-ink)] group-hover:translate-x-1 transition-transform inline-flex items-center space-x-1"><span>View Details</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
             </div>
           </div>
         </div>
       `).join('');
+
+      setupScrollReveal();
     }
 
-    function filterCategory(cat) {
+    function updateSliderPosition(btnElement) {
+      const slider = document.getElementById('filter-slider');
+      if (!slider || !btnElement) return;
+      slider.style.left = btnElement.offsetLeft + 'px';
+      slider.style.width = btnElement.offsetWidth + 'px';
+    }
+
+    function filterCategory(cat, btnElement) {
+      playScribbleSound();
       currentCategory = cat;
+      if (btnElement) updateSliderPosition(btnElement);
+
       document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.className = btn.dataset.category === cat 
-          ? "filter-btn active px-4 py-1.5 rounded-full text-xs font-medium bg-[#2d4030] text-white shadow-sm"
-          : "filter-btn px-4 py-1.5 rounded-full text-xs font-medium text-[#536456] hover:text-[#2d4030]";
+        if (btn.dataset.category === cat) {
+          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--bg-parchment)] transition-colors duration-300";
+        } else {
+          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300";
+        }
       });
+
+      document.querySelectorAll('.filter-btn-mobile').forEach(btn => {
+        btn.className = btn.dataset.category === cat 
+          ? "filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] shadow-sm transition-all"
+          : "filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all";
+      });
+
       renderGallery();
     }
 
     function handleSortChange() {
+      playScribbleSound();
       const val = document.getElementById('sort-select').value;
       if (val === 'title') ARTWORKS.sort((a, b) => a.title.localeCompare(b.title));
       else if (val === 'category') ARTWORKS.sort((a, b) => a.category.localeCompare(b.category));
@@ -343,76 +489,98 @@
     }
 
     function initSlideshow() {
-      updateSlide();
-      setInterval(() => nextSlide(), 4500);
+      if (!ARTWORKS.length) return;
+      const img1 = document.getElementById('slideshow-img-1');
+      const img2 = document.getElementById('slideshow-img-2');
+      const art1 = ARTWORKS[currentSlideIndex];
+      const art2 = ARTWORKS[(currentSlideIndex + 1) % ARTWORKS.length];
+
+      img1.src = art1.image;
+      img1.onerror = () => { img1.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art1.title)}`; };
+
+      img2.src = art2.image;
+      img2.onerror = () => { img2.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art2.title)}`; };
+
+      document.getElementById('slide-caption').innerText = art1.title;
+
+      setInterval(() => nextSlide(), 5000);
     }
 
-    function updateSlide() {
+    function updateSlide(direction = 1) {
       if (!ARTWORKS.length) return;
-      if (currentSlideIndex >= ARTWORKS.length) currentSlideIndex = 0;
-      const img = document.getElementById('slideshow-img');
+      const track = document.getElementById('slideshow-track');
+      const img1 = document.getElementById('slideshow-img-1');
+      const img2 = document.getElementById('slideshow-img-2');
       const caption = document.getElementById('slide-caption');
-      const wrapper = document.getElementById('slideshow-image-wrapper');
 
-      wrapper.classList.add('opacity-0');
+      currentSlideIndex = (currentSlideIndex + direction + ARTWORKS.length) % ARTWORKS.length;
+      const art = ARTWORKS[currentSlideIndex];
+      const nextIndex = (currentSlideIndex + 1) % ARTWORKS.length;
+      const nextArt = ARTWORKS[nextIndex];
+
+      track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+      track.style.transform = 'translateX(-50%)';
+
       setTimeout(() => {
-        const art = ARTWORKS[currentSlideIndex];
-        img.src = art.image;
-        img.onerror = () => { img.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+        track.style.transition = 'none';
+        img1.src = art.image;
+        img1.onerror = () => { img1.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+        track.style.transform = 'translateX(0%)';
+
+        img2.src = nextArt.image;
+        img2.onerror = () => { img2.src = `https://placehold.co/600x600/2d4030/ffffff?text=${encodeURIComponent(nextArt.title)}`; };
         caption.innerText = art.title;
-        wrapper.classList.remove('opacity-0');
-      }, 300);
+      }, 700);
     }
 
     function nextSlide(e) {
       if (e) e.stopPropagation();
-      if (!ARTWORKS.length) return;
-      currentSlideIndex = (currentSlideIndex + 1) % ARTWORKS.length;
-      updateSlide();
+      playScribbleSound();
+      updateSlide(1);
     }
 
     function prevSlide(e) {
       if (e) e.stopPropagation();
-      if (!ARTWORKS.length) return;
-      currentSlideIndex = (currentSlideIndex - 1 + ARTWORKS.length) % ARTWORKS.length;
-      updateSlide();
+      playScribbleSound();
+      updateSlide(-1);
     }
 
     function openCurrentSlideModal() {
-      if (ARTWORKS.length) openModalById(ARTWORKS[currentSlideIndex].id);
+      if (!ARTWORKS.length) return;
+      openModalById(ARTWORKS[currentSlideIndex].id);
     }
 
     function openRandomArtwork() {
+      playScribbleSound();
       if (!ARTWORKS.length) return;
       const randomIndex = Math.floor(Math.random() * ARTWORKS.length);
       openModalById(ARTWORKS[randomIndex].id);
     }
 
     function openModalById(id) {
-      const index = ARTWORKS.findIndex(a => a.id === id);
-      if (index !== -1) {
-        currentModalIndex = index;
-        updateModalContent();
-        document.getElementById('art-modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      }
+      playScribbleSound();
+      const idx = ARTWORKS.findIndex(a => a.id === id);
+      if (idx === -1) return;
+      currentModalIndex = idx;
+      populateModal();
+
+      const modal = document.getElementById('art-modal');
+      const card = document.getElementById('modal-card');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+      }, 10);
     }
 
-    function closeModal() {
-      document.getElementById('art-modal').classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'art-modal') closeModal();
-    }
-
-    function updateModalContent() {
-      if (!ARTWORKS.length) return;
+    function populateModal() {
       const art = ARTWORKS[currentModalIndex];
       const img = document.getElementById('modal-img');
       img.src = art.image;
-      img.onerror = () => { img.src = `https://placehold.co/800x1000/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+      img.onerror = () => { img.src = `https://placehold.co/800x800/2d4030/ffffff?text=${encodeURIComponent(art.title)}`; };
+
       document.getElementById('modal-title').innerText = art.title;
       document.getElementById('modal-category').innerText = art.category;
       document.getElementById('modal-date').innerText = art.date;
@@ -421,20 +589,167 @@
       document.getElementById('modal-counter').innerText = `${currentModalIndex + 1} of ${ARTWORKS.length}`;
     }
 
-    function navigateModal(dir) {
-      if (!ARTWORKS.length) return;
-      currentModalIndex = (currentModalIndex + dir + ARTWORKS.length) % ARTWORKS.length;
-      updateModalContent();
+    function navigateModal(direction) {
+      playScribbleSound();
+      currentModalIndex = (currentModalIndex + direction + ARTWORKS.length) % ARTWORKS.length;
+      const container = document.getElementById('modal-img-container');
+      container.classList.add('opacity-0');
+      setTimeout(() => {
+        populateModal();
+        container.classList.remove('opacity-0');
+      }, 200);
+    }
+
+    function closeModal() {
+      playScribbleSound();
+      const modal = document.getElementById('art-modal');
+      const card = document.getElementById('modal-card');
+      modal.classList.add('opacity-0');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'art-modal') closeModal();
+    }
+
+    function copyStudyLink() {
+      const art = ARTWORKS[currentModalIndex];
+      const text = `${window.location.origin}${window.location.pathname}#study-${art.id}`;
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      const label = document.getElementById('copy-label');
+      label.innerText = 'Copied!';
+      setTimeout(() => { label.innerText = 'Share'; }, 2000);
+    }
+
+    function togglePencilSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('sound-icon');
+      if (soundEnabled) {
+        icon.className = "fa-solid fa-volume-high";
+        initAudioContext();
+        playScribbleSound();
+      } else {
+        icon.className = "fa-solid fa-volume-xmark";
+      }
+    }
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playScribbleSound() {
+      if (!soundEnabled) return;
+      try {
+        initAudioContext();
+        const bufferSize = audioCtx.sampleRate * 0.08;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+
+        const whiteNoise = audioCtx.createBufferSource();
+        whiteNoise.buffer = buffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1400;
+        filter.Q.value = 2.0;
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+        whiteNoise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        whiteNoise.start();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function cycleTheme() {
+      playScribbleSound();
+      const body = document.body;
+      if (themes[currentThemeIdx]) body.classList.remove(themes[currentThemeIdx]);
+      currentThemeIdx = (currentThemeIdx + 1) % themes.length;
+      if (themes[currentThemeIdx]) body.classList.add(themes[currentThemeIdx]);
+    }
+
+    function setupScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => observer.observe(el));
     }
 
     function setupKeyboardNav() {
-      document.addEventListener('keydown', (e) => {
+      window.addEventListener('keydown', (e) => {
         const modal = document.getElementById('art-modal');
-        if (!modal.classList.contains('hidden')) {
-          if (e.key === 'Escape') closeModal();
-          if (e.key === 'ArrowLeft') navigateModal(-1);
-          if (e.key === 'ArrowRight') navigateModal(1);
+        const isModalOpen = !modal.classList.contains('hidden');
+
+        if (e.key === 'Escape' && isModalOpen) {
+          closeModal();
+        } else if (e.key === 'ArrowRight') {
+          if (isModalOpen) navigateModal(1);
+          else nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          if (isModalOpen) navigateModal(-1);
+          else prevSlide();
         }
+      });
+    }
+
+    function setupElasticPull() {
+      const wrapper = document.getElementById('pull-wrapper');
+      let startY = 0;
+      let currentY = 0;
+      let isPulling = false;
+
+      window.addEventListener('touchstart', (e) => {
+        if (window.scrollY === 0) {
+          startY = e.touches[0].clientY;
+          isPulling = true;
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!isPulling) return;
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        if (diff > 0 && window.scrollY === 0) {
+          const pullAmount = Math.min(diff * 0.35, 75);
+          wrapper.style.transform = `translateY(${pullAmount}px)`;
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchend', () => {
+        if (!isPulling) return;
+        isPulling = false;
+        wrapper.style.transform = 'translateY(0px)';
       });
     }
   </script>
