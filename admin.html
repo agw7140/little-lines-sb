@@ -27,7 +27,7 @@
   </div>
 
   <!-- DASHBOARD -->
-  <div id="dashboard" class="max-w-5xl mx-auto hidden space-y-8">
+  <div id="dashboard" class="max-w-6xl mx-auto hidden space-y-8">
     <div class="flex items-center justify-between pb-4 border-b border-[#ded6c5]">
       <div>
         <h1 class="text-2xl font-serif font-bold text-[#2d4030]">Artwork Studio & Manager</h1>
@@ -39,54 +39,71 @@
       </div>
     </div>
 
-    <!-- ADD FORM -->
-    <div class="bg-white p-6 rounded-2xl border border-[#ded6c5] shadow-sm">
-      <h2 id="form-heading" class="text-lg font-serif font-bold text-[#2d4030] mb-4">Upload / Add New Study</h2>
-      <form onsubmit="saveStudy(event)" class="space-y-4">
+    <!-- ADD / EDIT FORM (ERGONOMIC SPLIT LAYOUT) -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-[#ded6c5] shadow-sm">
+      <h2 id="form-heading" class="text-lg font-serif font-bold text-[#2d4030] mb-6">Upload / Add New Study</h2>
+      <form onsubmit="saveStudy(event)" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <input type="hidden" id="edit-id">
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Title</label>
-            <input type="text" id="form-title" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+        <!-- LEFT: PREVIEW COLUMN (Ergonomic Visual Focus) -->
+        <div class="lg:col-span-5 space-y-4">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-[#2d4030]">Visual Preview</label>
+          <div class="relative w-full aspect-[4/5] rounded-2xl border-2 border-dashed border-[#ded6c5] bg-[#f5f2e9]/50 flex flex-col items-center justify-center overflow-hidden group shadow-inner">
+            <img id="preview-img" src="" alt="Preview" class="w-full h-full object-cover hidden">
+            <div id="preview-placeholder" class="text-center p-6 space-y-2">
+              <div class="w-12 h-12 rounded-full bg-[#ded6c5]/50 text-[#2d4030] flex items-center justify-center mx-auto text-lg">
+                <i class="fa-solid fa-image"></i>
+              </div>
+              <p class="text-xs text-[#536456] font-medium">No image selected</p>
+              <p class="text-[10px] text-[#536456]/70">Upload a file or paste a URL below</p>
+            </div>
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Category</label>
-            <select id="form-category" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
-              <option value="Anatomy">Anatomy</option>
-              <option value="Portraits">Portraits</option>
-              <option value="Concepts">Concepts</option>
-            </select>
+            <label class="block text-xs font-semibold uppercase mb-1">Image Source File or URL</label>
+            <div class="space-y-2">
+              <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="w-full text-xs file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-[#2d4030] file:text-white cursor-pointer bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-1">
+              <input type="text" id="form-image" oninput="updatePreviewFromInput(this.value)" placeholder="image.jpg or URL" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-xs">
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- RIGHT: PARAMETERS COLUMN -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase mb-1">Title</label>
+              <input type="text" id="form-title" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase mb-1">Category</label>
+              <select id="form-category" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+                <option value="Anatomy">Anatomy</option>
+                <option value="Portraits">Portraits</option>
+                <option value="Concepts">Concepts</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase mb-1">Medium & Technique</label>
+              <input type="text" id="form-medium" required placeholder="HB Graphite Pencil" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase mb-1">Year / Date</label>
+              <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            </div>
+          </div>
+
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Medium & Technique</label>
-            <input type="text" id="form-medium" required placeholder="HB Graphite Pencil" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <label class="block text-xs font-semibold uppercase mb-1">Description / Study Breakdown</label>
+            <textarea id="form-desc" rows="4" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm"></textarea>
           </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Year / Date</label>
-            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+
+          <div class="flex justify-end space-x-3 pt-4 border-t border-[#ded6c5]">
+            <button type="button" onclick="resetForm()" class="px-5 py-2.5 border border-[#ded6c5] rounded-xl text-xs font-semibold hover:bg-gray-50">Reset</button>
+            <button type="submit" class="px-6 py-2.5 bg-[#2d4030] text-white rounded-xl text-xs font-semibold hover:bg-[#1f2d22] shadow-sm">Save Study</button>
           </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold uppercase mb-1">Image Source</label>
-          <div class="space-y-2">
-            <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-[#2d4030] file:text-white cursor-pointer">
-            <input type="text" id="form-image" placeholder="Image URL or relative path (e.g. image.jpg)" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold uppercase mb-1">Description / Study Breakdown</label>
-          <textarea id="form-desc" rows="3" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm"></textarea>
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="resetForm()" class="px-4 py-2 border border-[#ded6c5] rounded-xl text-xs font-semibold">Reset</button>
-          <button type="submit" class="px-6 py-2 bg-[#2d4030] text-white rounded-xl text-xs font-semibold hover:bg-[#1f2d22]">Save Study</button>
         </div>
       </form>
     </div>
@@ -114,6 +131,8 @@
     }
 
     function logout() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden'); // or auth screen
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('dashboard').classList.add('hidden');
       document.getElementById('passcode-input').value = '';
@@ -128,11 +147,32 @@
       renderList();
     }
 
+    function updatePreview(url) {
+      const img = document.getElementById('preview-img');
+      const placeholder = document.getElementById('preview-placeholder');
+      if (url) {
+        img.src = url;
+        img.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        img.src = '';
+        img.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    function updatePreviewFromInput(val) {
+      updatePreview(val);
+    }
+
     function handleFileSelect(event) {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => document.getElementById('form-image').value = e.target.result;
+        reader.onload = (e) => {
+          document.getElementById('form-image').value = e.target.result;
+          updatePreview(e.target.result);
+        };
         reader.readAsDataURL(file);
       }
     }
@@ -172,6 +212,7 @@
       document.getElementById('form-date').value = item.date;
       document.getElementById('form-image').value = item.image;
       document.getElementById('form-desc').value = item.description;
+      updatePreview(item.image);
       document.getElementById('form-heading').innerText = "Edit Study #" + id;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -186,22 +227,23 @@
       document.getElementById('edit-id').value = '';
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
       document.querySelector('form').reset();
+      updatePreview('');
     }
 
     function renderList() {
       const list = getArtworks();
       document.getElementById('item-list').innerHTML = list.map(item => `
-        <div class="bg-white p-4 rounded-xl border border-[#ded6c5] flex space-x-4 items-center justify-between">
+        <div class="bg-white p-4 rounded-xl border border-[#ded6c5] flex space-x-4 items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3 overflow-hidden">
-            <img src="${item.image}" class="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0">
+            <img src="${item.image}" onerror="this.src='https://placehold.co/100x100/2d4030/ffffff?text=Art'" class="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0">
             <div class="truncate">
               <h4 class="font-serif font-bold text-sm text-[#2d4030] truncate">${item.title}</h4>
               <p class="text-xs text-[#536456]">${item.category} • ${item.date}</p>
             </div>
           </div>
           <div class="flex space-x-2 flex-shrink-0">
-            <button onclick="editItem(${item.id})" class="p-2 bg-gray-100 hover:bg-[#2d4030] hover:text-white rounded-lg text-xs"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="deleteItem(${item.id})" class="p-2 bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-600 rounded-lg text-xs"><i class="fa-solid fa-trash"></i></button>
+            <button onclick="editItem(${item.id})" class="p-2 bg-gray-100 hover:bg-[#2d4030] hover:text-white rounded-lg text-xs transition-colors"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteItem(${item.id})" class="p-2 bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-600 rounded-lg text-xs transition-colors"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       `).join('');
