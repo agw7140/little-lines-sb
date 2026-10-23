@@ -23,20 +23,20 @@
     }
     @keyframes dramaticFlash {
       0% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
-      30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 25px rgba(22, 101, 52, 0.6); }
+      30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 30px rgba(22, 101, 52, 0.8); }
       100% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
     }
     .animate-dramatic {
-      animation: dramaticFlash 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: dramaticFlash 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes slideUpToast {
-      0% { transform: translateY(100px); opacity: 0; }
+      0% { transform: translateY(120px); opacity: 0; }
       15% { transform: translateY(0); opacity: 1; }
       85% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(100px); opacity: 0; }
+      100% { transform: translateY(120px); opacity: 0; }
     }
     .toast-anim {
-      animation: slideUpToast 3.5s ease-in-out forwards;
+      animation: slideUpToast 4s ease-in-out forwards;
     }
   </style>
 </head>
@@ -106,7 +106,7 @@
     <!-- ADD FORM -->
     <div class="bg-[var(--card-parchment)] p-6 sm:p-8 rounded-sm border border-[var(--border-parchment)] shadow-sm relative overflow-hidden">
       <h2 id="form-heading" class="text-lg font-serif font-bold text-[var(--text-ink)] mb-4">Upload / Add New Study</h2>
-      <form onsubmit="saveStudy(event)" class="space-y-4">
+      <form id="study-form" onsubmit="saveStudy(event)" class="space-y-4">
         <input type="hidden" id="edit-id">
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -131,7 +131,7 @@
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Year / Date</label>
-            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]" value="Oct 17, 2026">
           </div>
         </div>
 
@@ -199,8 +199,7 @@
       { id: 15, title: "HB pencil study of hand structure", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Focused mainly on the knuckles and how the skin wraps around the bone." }
     ];
 
-    let selectedFileBase64 = null;
-    let selectedFileName = null;
+    let activeFileBuffer = null; // Stores { name, base64 }
 
     window.onload = function() {
       loadGithubSettings();
@@ -225,8 +224,7 @@
     }
 
     function toggleGithubSettings() {
-      const panel = document.getElementById('github-config-panel');
-      panel.classList.toggle('hidden');
+      document.getElementById('github-config-panel').classList.toggle('hidden');
     }
 
     function loadGithubSettings() {
@@ -245,7 +243,7 @@
       };
       localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
       updateGithubBadge();
-      showToast("GitHub Settings Saved", "Repository configurations updated successfully!");
+      showToast("GitHub Settings Saved", "Repository credentials updated successfully!");
     }
 
     function updateGithubBadge() {
@@ -276,16 +274,19 @@
 
     function handleFileSelect(event) {
       const file = event.target.files[0];
-      if (file) {
-        selectedFileName = file.name;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const result = e.target.result;
-          selectedFileBase64 = result.split(',')[1];
-          document.getElementById('form-image').value = file.name;
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const fullResult = e.target.result;
+        const base64Data = fullResult.split(',')[1];
+        activeFileBuffer = {
+          name: file.name,
+          base64: base64Data
         };
-        reader.readAsDataURL(file);
-      }
+        document.getElementById('form-image').value = file.name;
+      };
+      reader.readAsDataURL(file);
     }
 
     async function pushToGitHub(path, contentBase64, commitMessage) {
@@ -297,13 +298,16 @@
       let sha = "";
       try {
         const checkRes = await fetch(url, {
-          headers: { "Authorization": `token ${cfg.token}` }
+          headers: { 
+            "Authorization": `token ${cfg.token}`,
+            "Accept": "application/vnd.github.v3+json"
+          }
         });
         if (checkRes.ok) {
           const checkData = await checkRes.json();
           sha = checkData.sha;
         }
-      } catch (e) { console.log("New file commit."); }
+      } catch (e) { console.log("Creating new file path."); }
 
       const payload = {
         message: commitMessage,
@@ -315,7 +319,8 @@
         method: "PUT",
         headers: {
           "Authorization": `token ${cfg.token}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Accept": "application/vnd.github.v3+json"
         },
         body: JSON.stringify(payload)
       });
@@ -336,16 +341,16 @@
       const list = getArtworks();
       const id = document.getElementById('edit-id').value;
       const isEditing = !!id;
-      const imgVal = document.getElementById('form-image').value || 'image.jpg';
+      const imgVal = document.getElementById('form-image').value.trim() || 'image.jpg';
 
       const item = {
         id: id ? parseInt(id) : Date.now(),
-        title: document.getElementById('form-title').value,
+        title: document.getElementById('form-title').value.trim(),
         category: document.getElementById('form-category').value,
-        medium: document.getElementById('form-medium').value,
-        date: document.getElementById('form-date').value || '2026',
+        medium: document.getElementById('form-medium').value.trim(),
+        date: document.getElementById('form-date').value.trim() || '2026',
         image: imgVal,
-        description: document.getElementById('form-desc').value
+        description: document.getElementById('form-desc').value.trim()
       };
 
       if (isEditing) {
@@ -360,17 +365,23 @@
       let githubPushed = false;
       const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
       
-      if (cfg.token && cfg.owner && cfg.repo) {
-        try {
-          if (selectedFileBase64 && selectedFileName) {
-            await pushToGitHub(selectedFileName, selectedFileBase64, `Upload image: ${selectedFileName}`);
+      try {
+        if (cfg.token && cfg.owner && cfg.repo) {
+          // If a new file was buffered via file input, push it first
+          if (activeFileBuffer) {
+            await pushToGitHub(activeFileBuffer.name, activeFileBuffer.base64, `Upload image study: ${activeFileBuffer.name}`);
           }
 
-          const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
-          githubPushed = await pushToGitHub('data/artworks.json', jsonContent, `Update sketchbook index: ${item.title}`);
-        } catch (err) {
-          console.error("GitHub Push Error:", err);
+          // Push updated artworks.json index
+          const jsonString = JSON.stringify(list, null, 2);
+          const jsonBase64 = btoa(unescape(encodeURIComponent(jsonString)));
+          githubPushed = await pushToGitHub('data/artworks.json', jsonBase64, `Update sketchbook index: ${item.title}`);
         }
+      } catch (err) {
+        console.error("GitHub Push Error:", err);
+      } finally {
+        // ALWAYS clear active file buffer so next upload starts completely fresh
+        activeFileBuffer = null;
       }
 
       spinner.classList.add('hidden');
@@ -402,7 +413,7 @@
       setTimeout(() => {
         toast.classList.remove('toast-anim');
         toast.classList.add('hidden');
-      }, 3500);
+      }, 4000);
     }
 
     function editItem(id) {
@@ -430,11 +441,10 @@
     function resetForm() {
       document.getElementById('edit-id').value = '';
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
-      document.querySelector('form').reset();
+      document.getElementById('study-form').reset();
       document.getElementById('file-input').value = '';
-      document.getElementById('form-date').value = '2026';
-      selectedFileBase64 = null;
-      selectedFileName = null;
+      document.getElementById('form-date').value = 'Oct 17, 2026';
+      activeFileBuffer = null;
     }
 
     function renderList() {
