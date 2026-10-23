@@ -84,21 +84,18 @@
         </h3>
         <span id="github-status-badge" class="text-[10px] px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 border border-amber-300 font-mono">Not Configured</span>
       </div>
-      <p class="text-xs text-[var(--text-muted)]">
-        Provide your repository details and Personal Access Token (PAT). Uploaded images and JSON data will be committed straight to your GitHub repository!
-      </p>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">GitHub Username</label>
-          <input type="text" id="gh-owner" placeholder="e.g. username" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">GitHub Username</label>
+          <input type="text" id="gh-owner" placeholder="Username" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
         </div>
         <div>
-          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">Repository Name</label>
-          <input type="text" id="gh-repo" placeholder="e.g. sketchbook" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Repository Name</label>
+          <input type="text" id="gh-repo" placeholder="sketchbook-repo" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
         </div>
         <div>
-          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">Personal Access Token (PAT)</label>
-          <input type="password" id="gh-token" placeholder="ghp_xxxx..." class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Personal Access Token (PAT)</label>
+          <input type="password" id="gh-token" placeholder="ghp_..." class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
         </div>
       </div>
       <div class="flex justify-end space-x-2 pt-1">
@@ -184,19 +181,30 @@
     const GH_CONFIG_KEY = 'aidan_sketchbook_gh_config';
     const ADMIN_CODE = 'Gmao0314';
 
-    let selectedFileBase64 = null;
-    let selectedFileName = null;
-
     const DEFAULT_ARTWORKS = [
       { id: 1, title: "Portrait Study with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
       { id: 2, title: "Portrait Study No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
       { id: 3, title: "Man in Coat", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
       { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "Oct 17, 2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
-      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." }
+      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
+      { id: 6, title: "Skull Anatomy Perspective Grid I", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "PXL_20261017_154914010.jpg", description: "Anatomical skull breakdown utilizing perspective construction lines." },
+      { id: 7, title: "Skull Anatomy Frontal View", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154917483.jpg", description: "Frontal skull study mapping brow structures and orbital sockets." },
+      { id: 8, title: "Skull Anatomy & Brow Notes", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154926365.jpg", description: "Detailed anatomical breakdown focusing on brow lines and cranial plates." },
+      { id: 9, title: "Skull Anatomy 3/4 Angle", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261018_022902080~2.jpg", description: "Three-quarter perspective study mapping brow planes." },
+      { id: 10, title: "Plane breakdown + memory sketch", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155016501~2.jpg", description: "Exploration of geometric planar breakdown melting into fluid drops." },
+      { id: 11, title: "Portrait Study (No Ref)", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155022266~2.jpg", description: "Freehand portrait study from imagination." },
+      { id: 12, title: "Portrait Study 6/20", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155457922~2.jpg", description: "Tonal portrait study focusing on soft shadows." },
+      { id: 13, title: "Portrait Study 6/19", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155035983~2.jpg", description: "Observational head study capturing curly hair texture." },
+      { id: 14, title: "Geometric Teapot Concept", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155044822~2.jpg", description: "Combining sharp wireframe construction with shaded curved forms." },
+      { id: 15, title: "HB pencil study of hand structure", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Focused mainly on the knuckles and how the skin wraps around the bone." }
     ];
+
+    let selectedFileBase64 = null;
+    let selectedFileName = null;
 
     window.onload = function() {
       loadGithubSettings();
+      getArtworks();
     };
 
     function verifyPasscode(e) {
@@ -273,14 +281,13 @@
         const reader = new FileReader();
         reader.onload = (e) => {
           const result = e.target.result;
-          selectedFileBase64 = result.split(',')[1]; // Strip base64 prefix for GitHub API
+          selectedFileBase64 = result.split(',')[1];
           document.getElementById('form-image').value = file.name;
         };
         reader.readAsDataURL(file);
       }
     }
 
-    // Direct GitHub REST API Commit Function
     async function pushToGitHub(path, contentBase64, commitMessage) {
       const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
       if (!cfg.owner || !cfg.repo || !cfg.token) return false;
@@ -348,21 +355,17 @@
         list.unshift(item);
       }
 
-      // Save locally
       saveArtworks(list);
 
-      // Attempt GitHub Push if configured
       let githubPushed = false;
       const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
       
       if (cfg.token && cfg.owner && cfg.repo) {
         try {
-          // 1. Upload image file if selected
           if (selectedFileBase64 && selectedFileName) {
             await pushToGitHub(selectedFileName, selectedFileBase64, `Upload image: ${selectedFileName}`);
           }
 
-          // 2. Upload artworks.json metadata
           const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
           githubPushed = await pushToGitHub('data/artworks.json', jsonContent, `Update sketchbook index: ${item.title}`);
         } catch (err) {
@@ -373,7 +376,6 @@
       spinner.classList.add('hidden');
       btn.disabled = false;
 
-      // Dramatic UI Feedback
       btnText.innerText = isEditing ? "Study Updated! ✓" : "Archived & Pushed! ✓";
       btn.classList.add('animate-dramatic');
 
@@ -429,6 +431,7 @@
       document.getElementById('edit-id').value = '';
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
       document.querySelector('form').reset();
+      document.getElementById('file-input').value = '';
       document.getElementById('form-date').value = '2026';
       selectedFileBase64 = null;
       selectedFileName = null;
