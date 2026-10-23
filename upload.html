@@ -23,20 +23,19 @@
     }
     @keyframes dramaticFlash {
       0% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
-      30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 30px rgba(22, 101, 52, 0.8); }
+      30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 25px rgba(22, 101, 52, 0.6); }
       100% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
-    }
     .animate-dramatic {
-      animation: dramaticFlash 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: dramaticFlash 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes slideUpToast {
-      0% { transform: translateY(120px); opacity: 0; }
+      0% { transform: translateY(100px); opacity: 0; }
       15% { transform: translateY(0); opacity: 1; }
       85% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(120px); opacity: 0; }
+      100% { transform: translateY(100px); opacity: 0; }
     }
     .toast-anim {
-      animation: slideUpToast 4s ease-in-out forwards;
+      animation: slideUpToast 3s ease-in-out forwards;
     }
   </style>
 </head>
@@ -66,47 +65,15 @@
         <p class="text-xs text-[var(--text-muted)] font-academic italic">Manage and archive studies displayed on index.html</p>
       </div>
       <div class="flex items-center space-x-3">
-        <button onclick="toggleGithubSettings()" class="px-4 py-2 bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs font-semibold text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all flex items-center space-x-2">
-          <i class="fa-brands fa-github text-sm"></i>
-          <span>GitHub Config</span>
-        </button>
         <a href="index.html" class="px-4 py-2 bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs font-semibold text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all">View Live Site</a>
         <button onclick="logout()" class="px-4 py-2 bg-rose-700 text-white rounded-sm text-xs font-semibold hover:bg-rose-800 transition-all">Logout</button>
-      </div>
-    </div>
-
-    <!-- GITHUB API CONFIGURATION PANEL -->
-    <div id="github-config-panel" class="hidden bg-[var(--card-parchment)] p-6 rounded-sm border border-[var(--border-parchment)] shadow-sm space-y-4">
-      <div class="flex justify-between items-center pb-2 border-b border-[var(--border-parchment)]">
-        <h3 class="font-serif font-bold text-sm text-[var(--text-ink)] flex items-center space-x-2">
-          <i class="fa-brands fa-github text-base"></i>
-          <span>GitHub Auto-Push Settings</span>
-        </h3>
-        <span id="github-status-badge" class="text-[10px] px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 border border-amber-300 font-mono">Not Configured</span>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">GitHub Username</label>
-          <input type="text" id="gh-owner" placeholder="Username" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
-        </div>
-        <div>
-          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Repository Name</label>
-          <input type="text" id="gh-repo" placeholder="sketchbook-repo" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
-        </div>
-        <div>
-          <label class="block text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-1">Personal Access Token (PAT)</label>
-          <input type="password" id="gh-token" placeholder="ghp_..." class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs">
-        </div>
-      </div>
-      <div class="flex justify-end space-x-2 pt-1">
-        <button onclick="saveGithubSettings()" class="px-4 py-1.5 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all">Save Credentials</button>
       </div>
     </div>
 
     <!-- ADD FORM -->
     <div class="bg-[var(--card-parchment)] p-6 sm:p-8 rounded-sm border border-[var(--border-parchment)] shadow-sm relative overflow-hidden">
       <h2 id="form-heading" class="text-lg font-serif font-bold text-[var(--text-ink)] mb-4">Upload / Add New Study</h2>
-      <form id="study-form" onsubmit="saveStudy(event)" class="space-y-4">
+      <form onsubmit="saveStudy(event)" class="space-y-4">
         <input type="hidden" id="edit-id">
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -131,15 +98,15 @@
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Year / Date</label>
-            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]" value="Oct 17, 2026">
+            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Image File / URL</label>
+          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Image Source</label>
           <div class="space-y-2">
-            <input type="file" id="file-input" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-sm file:border-0 file:bg-[var(--accent-green)] file:text-[var(--bg-parchment)] cursor-pointer">
-            <input type="text" id="form-image" placeholder="Relative filename (e.g. study1.jpg) or image URL" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+            <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-sm file:border-0 file:bg-[var(--accent-green)] file:text-[var(--bg-parchment)] cursor-pointer">
+            <input type="text" id="form-image" placeholder="Image URL or relative path (e.g. image.jpg)" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
         </div>
 
@@ -150,10 +117,7 @@
 
         <div class="flex justify-end space-x-3 pt-2">
           <button type="button" onclick="resetForm()" class="px-4 py-2 border border-[var(--border-parchment)] rounded-sm text-xs font-semibold bg-[var(--card-parchment)] hover:bg-[var(--bg-parchment)] transition-all">Clear Form</button>
-          <button type="submit" id="save-btn" class="px-6 py-2 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all shadow-sm flex items-center space-x-2">
-            <i id="save-spinner" class="fa-solid fa-spinner fa-spin hidden"></i>
-            <span id="save-btn-text">Save Study & Push</span>
-          </button>
+          <button type="submit" id="save-btn" class="px-6 py-2 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all shadow-sm">Save Study</button>
         </div>
       </form>
     </div>
@@ -167,7 +131,7 @@
 
   <!-- DRAMATIC TOAST NOTIFICATION -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-[var(--accent-green)] text-[var(--bg-parchment)] px-6 py-4 rounded-sm shadow-2xl border border-[var(--border-parchment)] flex items-center space-x-3">
-    <div id="toast-icon" class="w-8 h-8 rounded-sm bg-emerald-700 text-white flex items-center justify-center text-sm">
+    <div class="w-8 h-8 rounded-sm bg-emerald-700 text-white flex items-center justify-center text-sm">
       <i class="fa-solid fa-check"></i>
     </div>
     <div>
@@ -178,7 +142,6 @@
 
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
-    const GH_CONFIG_KEY = 'aidan_sketchbook_gh_config';
     const ADMIN_CODE = 'Gmao0314';
 
     const DEFAULT_ARTWORKS = [
@@ -199,13 +162,6 @@
       { id: 15, title: "HB pencil study of hand structure", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Focused mainly on the knuckles and how the skin wraps around the bone." }
     ];
 
-    let activeFileBuffer = null; // Stores { name, base64 }
-
-    window.onload = function() {
-      loadGithubSettings();
-      getArtworks();
-    };
-
     function verifyPasscode(e) {
       e.preventDefault();
       if (document.getElementById('passcode-input').value === ADMIN_CODE) {
@@ -221,41 +177,6 @@
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('dashboard').classList.add('hidden');
       document.getElementById('passcode-input').value = '';
-    }
-
-    function toggleGithubSettings() {
-      document.getElementById('github-config-panel').classList.toggle('hidden');
-    }
-
-    function loadGithubSettings() {
-      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
-      if (cfg.owner) document.getElementById('gh-owner').value = cfg.owner;
-      if (cfg.repo) document.getElementById('gh-repo').value = cfg.repo;
-      if (cfg.token) document.getElementById('gh-token').value = cfg.token;
-      updateGithubBadge();
-    }
-
-    function saveGithubSettings() {
-      const cfg = {
-        owner: document.getElementById('gh-owner').value.trim(),
-        repo: document.getElementById('gh-repo').value.trim(),
-        token: document.getElementById('gh-token').value.trim()
-      };
-      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
-      updateGithubBadge();
-      showToast("GitHub Settings Saved", "Repository credentials updated successfully!");
-    }
-
-    function updateGithubBadge() {
-      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
-      const badge = document.getElementById('github-status-badge');
-      if (cfg.owner && cfg.repo && cfg.token) {
-        badge.innerText = "Connected: " + cfg.repo;
-        badge.className = "text-[10px] px-2 py-0.5 rounded-sm bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono";
-      } else {
-        badge.innerText = "Not Configured (Local Only)";
-        badge.className = "text-[10px] px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 border border-amber-300 font-mono";
-      }
     }
 
     function getArtworks() {
@@ -274,83 +195,26 @@
 
     function handleFileSelect(event) {
       const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const fullResult = e.target.result;
-        const base64Data = fullResult.split(',')[1];
-        activeFileBuffer = {
-          name: file.name,
-          base64: base64Data
-        };
-        document.getElementById('form-image').value = file.name;
-      };
-      reader.readAsDataURL(file);
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => document.getElementById('form-image').value = e.target.result;
+        reader.readAsDataURL(file);
+      }
     }
 
-    async function pushToGitHub(path, contentBase64, commitMessage) {
-      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
-      if (!cfg.owner || !cfg.repo || !cfg.token) return false;
-
-      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`;
-      
-      let sha = "";
-      try {
-        const checkRes = await fetch(url, {
-          headers: { 
-            "Authorization": `token ${cfg.token}`,
-            "Accept": "application/vnd.github.v3+json"
-          }
-        });
-        if (checkRes.ok) {
-          const checkData = await checkRes.json();
-          sha = checkData.sha;
-        }
-      } catch (e) { console.log("Creating new file path."); }
-
-      const payload = {
-        message: commitMessage,
-        content: contentBase64,
-        ...(sha && { sha })
-      };
-
-      const res = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Authorization": `token ${cfg.token}`,
-          "Content-Type": "application/json",
-          "Accept": "application/vnd.github.v3+json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      return res.ok;
-    }
-
-    async function saveStudy(e) {
+    function saveStudy(e) {
       e.preventDefault();
-      const spinner = document.getElementById('save-spinner');
-      const btnText = document.getElementById('save-btn-text');
-      const btn = document.getElementById('save-btn');
-
-      spinner.classList.remove('hidden');
-      btnText.innerText = "Pushing to GitHub...";
-      btn.disabled = true;
-
       const list = getArtworks();
       const id = document.getElementById('edit-id').value;
       const isEditing = !!id;
-      const imgVal = document.getElementById('form-image').value.trim() || 'image.jpg';
-
       const item = {
         id: id ? parseInt(id) : Date.now(),
-        title: document.getElementById('form-title').value.trim(),
+        title: document.getElementById('form-title').value,
         category: document.getElementById('form-category').value,
-        medium: document.getElementById('form-medium').value.trim(),
-        date: document.getElementById('form-date').value.trim() || '2026',
-        image: imgVal,
-        description: document.getElementById('form-desc').value.trim()
+        medium: document.getElementById('form-medium').value,
+        date: document.getElementById('form-date').value || '2026',
+        image: document.getElementById('form-image').value || 'image.jpg',
+        description: document.getElementById('form-desc').value
       };
 
       if (isEditing) {
@@ -362,58 +226,30 @@
 
       saveArtworks(list);
 
-      let githubPushed = false;
-      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
-      
-      try {
-        if (cfg.token && cfg.owner && cfg.repo) {
-          // If a new file was buffered via file input, push it first
-          if (activeFileBuffer) {
-            await pushToGitHub(activeFileBuffer.name, activeFileBuffer.base64, `Upload image study: ${activeFileBuffer.name}`);
-          }
-
-          // Push updated artworks.json index
-          const jsonString = JSON.stringify(list, null, 2);
-          const jsonBase64 = btoa(unescape(encodeURIComponent(jsonString)));
-          githubPushed = await pushToGitHub('data/artworks.json', jsonBase64, `Update sketchbook index: ${item.title}`);
-        }
-      } catch (err) {
-        console.error("GitHub Push Error:", err);
-      } finally {
-        // ALWAYS clear active file buffer so next upload starts completely fresh
-        activeFileBuffer = null;
-      }
-
-      spinner.classList.add('hidden');
-      btn.disabled = false;
-
-      btnText.innerText = isEditing ? "Study Updated! ✓" : "Archived & Pushed! ✓";
+      // Dramatic button flash and toast feedback
+      const btn = document.getElementById('save-btn');
+      btn.innerText = isEditing ? "Study Updated! ✓" : "Archived Successfully! ✓";
       btn.classList.add('animate-dramatic');
 
-      if (githubPushed) {
-        showToast("Pushed Directly to GitHub!", `Committed "${item.title}" & updated repository file index.`);
-      } else {
-        showToast(isEditing ? "Study Updated Locally" : "Saved to Local Storage", "Configure GitHub settings above to push directly to repo!");
-      }
+      showToast(isEditing ? "Study successfully updated in archive" : "New drawing permanently added to sketchbook");
 
       setTimeout(() => {
         btn.classList.remove('animate-dramatic');
-        btnText.innerText = "Save Study & Push";
+        btn.innerText = "Save Study";
       }, 1500);
 
       resetForm();
     }
 
-    function showToast(title, subtitle) {
+    function showToast(subtitle) {
       const toast = document.getElementById('toast');
-      document.getElementById('toast-title').innerText = title;
       document.getElementById('toast-subtitle').innerText = subtitle;
       toast.classList.remove('hidden');
       toast.classList.add('toast-anim');
       setTimeout(() => {
         toast.classList.remove('toast-anim');
         toast.classList.add('hidden');
-      }, 4000);
+      }, 3000);
     }
 
     function editItem(id) {
@@ -432,19 +268,16 @@
 
     function deleteItem(id) {
       if (confirm("Delete this study permanently from the index?")) {
-        const updated = getArtworks().filter(a => a.id !== id);
-        saveArtworks(updated);
-        showToast("Study Removed", "Removed item from local study index.");
+        saveArtworks(getArtworks().filter(a => a.id !== id));
+        showToast("Study removed from archive.");
       }
     }
 
     function resetForm() {
       document.getElementById('edit-id').value = '';
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
-      document.getElementById('study-form').reset();
-      document.getElementById('file-input').value = '';
-      document.getElementById('form-date').value = 'Oct 17, 2026';
-      activeFileBuffer = null;
+      document.querySelector('form').reset();
+      document.getElementById('form-date').value = '2026';
     }
 
     function renderList() {
