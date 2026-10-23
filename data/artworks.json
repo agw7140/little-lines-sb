@@ -1,0 +1,137 @@
+[
+{
+"id": 1,
+"title": "Portrait Study with Signature",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite Pencil",
+"image": "image.jpg",
+"description": "Observational graphite portrait study dated September 9, 2026."
+},
+{
+"id": 2,
+"title": "Portrait Study No Reference",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "Graphite Pencil",
+"image": "PXL_20261018_034436745~2.jpg",
+"description": "Detailed graphite portrait study capturing expressive features."
+},
+{
+"id": 3,
+"title": "Man in Coat",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "Digital Ink & Graphite",
+"image": "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png",
+"description": "Bold character study featuring high-contrast black ink work."
+},
+{
+"id": 4,
+"title": "Macro Eye & Structural Shading",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "Digital Graphite Study",
+"image": "eye.png",
+"description": "Detailed observational study of eye anatomy and specular highlights."
+},
+{
+"id": 5,
+"title": "Green Tonal Portrait Study",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "Digital Airbrush",
+"image": "Screenshot_20260802-232807.png",
+"description": "Atmospheric portrait study exploring monochromatic green shading."
+},
+{
+"id": 6,
+"title": "Skull Anatomy Perspective Grid I",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite Pencil",
+"image": "PXL_20261017_154914010.jpg",
+"description": "Anatomical skull breakdown utilizing perspective construction lines."
+},
+{
+"id": 7,
+"title": "Skull Anatomy Frontal View",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_154917483.jpg",
+"description": "Frontal skull study mapping brow structures and orbital sockets."
+},
+{
+"id": 8,
+"title": "Skull Anatomy & Brow Notes",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_154926365.jpg",
+"description": "Detailed anatomical breakdown focusing on brow lines and cranial plates."
+},
+{
+"id": 9,
+"title": "Skull Anatomy 3/4 Angle",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261018_022902080~2.jpg",
+"description": "Three-quarter perspective study mapping brow planes."
+},
+{
+"id": 10,
+"title": "Plane breakdown + memory sketch",
+"category": "Concepts",
+"date": "Oct 17, 2026",
+"medium": "Graphite Pencil",
+"image": "PXL_20261017_155016501~2.jpg",
+"description": "Exploration of geometric planar breakdown melting into fluid drops."
+},
+{
+"id": 11,
+"title": "Portrait Study (No Ref)",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_155022266~2.jpg",
+"description": "Freehand portrait study from imagination."
+},
+{
+"id": 12,
+"title": "Portrait Study 6/20",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_155457922~2.jpg",
+"description": "Tonal portrait study focusing on soft shadows."
+},
+{
+"id": 13,
+"title": "Portrait Study 6/19",
+"category": "Portraits",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_155035983~2.jpg",
+"description": "Observational head study capturing curly hair texture."
+},
+{
+"id": 14,
+"title": "Geometric Teapot Concept",
+"category": "Concepts",
+"date": "Oct 17, 2026",
+"medium": "Graphite Pencil",
+"image": "PXL_20261017_155044822~2.jpg",
+"description": "Combining sharp wireframe construction with shaded curved forms."
+},
+{
+"id": 15,
+"title": "HB pencil study of hand structure",
+"category": "Anatomy",
+"date": "Oct 17, 2026",
+"medium": "HB Graphite",
+"image": "PXL_20261017_155050781~3.jpg",
+"description": "Focused mainly on the knuckles and how the skin wraps around the bone."
+}
+]
