@@ -25,6 +25,7 @@
       0% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
       30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 25px rgba(22, 101, 52, 0.6); }
       100% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
+    }
     .animate-dramatic {
       animation: dramaticFlash 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -35,7 +36,7 @@
       100% { transform: translateY(100px); opacity: 0; }
     }
     .toast-anim {
-      animation: slideUpToast 3s ease-in-out forwards;
+      animation: slideUpToast 3.5s ease-in-out forwards;
     }
   </style>
 </head>
@@ -65,8 +66,43 @@
         <p class="text-xs text-[var(--text-muted)] font-academic italic">Manage and archive studies displayed on index.html</p>
       </div>
       <div class="flex items-center space-x-3">
+        <button onclick="toggleGithubSettings()" class="px-4 py-2 bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs font-semibold text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all flex items-center space-x-2">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub Config</span>
+        </button>
         <a href="index.html" class="px-4 py-2 bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs font-semibold text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all">View Live Site</a>
         <button onclick="logout()" class="px-4 py-2 bg-rose-700 text-white rounded-sm text-xs font-semibold hover:bg-rose-800 transition-all">Logout</button>
+      </div>
+    </div>
+
+    <!-- GITHUB API CONFIGURATION PANEL -->
+    <div id="github-config-panel" class="hidden bg-[var(--card-parchment)] p-6 rounded-sm border border-[var(--border-parchment)] shadow-sm space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-[var(--border-parchment)]">
+        <h3 class="font-serif font-bold text-sm text-[var(--text-ink)] flex items-center space-x-2">
+          <i class="fa-brands fa-github text-base"></i>
+          <span>GitHub Auto-Push Settings</span>
+        </h3>
+        <span id="github-status-badge" class="text-[10px] px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 border border-amber-300 font-mono">Not Configured</span>
+      </div>
+      <p class="text-xs text-[var(--text-muted)]">
+        Provide your repository details and Personal Access Token (PAT). Uploaded images and JSON data will be committed straight to your GitHub repository!
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">GitHub Username</label>
+          <input type="text" id="gh-owner" placeholder="e.g. username" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+        </div>
+        <div>
+          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">Repository Name</label>
+          <input type="text" id="gh-repo" placeholder="e.g. sketchbook" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+        </div>
+        <div>
+          <label class="block text-[10px] font-semibold uppercase mb-1 text-[var(--text-muted)]">Personal Access Token (PAT)</label>
+          <input type="password" id="gh-token" placeholder="ghp_xxxx..." class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+        </div>
+      </div>
+      <div class="flex justify-end space-x-2 pt-1">
+        <button onclick="saveGithubSettings()" class="px-4 py-1.5 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all">Save Credentials</button>
       </div>
     </div>
 
@@ -103,10 +139,10 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Image Source</label>
+          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Image File / URL</label>
           <div class="space-y-2">
-            <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-sm file:border-0 file:bg-[var(--accent-green)] file:text-[var(--bg-parchment)] cursor-pointer">
-            <input type="text" id="form-image" placeholder="Image URL or relative path (e.g. image.jpg)" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
+            <input type="file" id="file-input" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-sm file:border-0 file:bg-[var(--accent-green)] file:text-[var(--bg-parchment)] cursor-pointer">
+            <input type="text" id="form-image" placeholder="Relative filename (e.g. study1.jpg) or image URL" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
         </div>
 
@@ -117,7 +153,10 @@
 
         <div class="flex justify-end space-x-3 pt-2">
           <button type="button" onclick="resetForm()" class="px-4 py-2 border border-[var(--border-parchment)] rounded-sm text-xs font-semibold bg-[var(--card-parchment)] hover:bg-[var(--bg-parchment)] transition-all">Clear Form</button>
-          <button type="submit" id="save-btn" class="px-6 py-2 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all shadow-sm">Save Study</button>
+          <button type="submit" id="save-btn" class="px-6 py-2 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all shadow-sm flex items-center space-x-2">
+            <i id="save-spinner" class="fa-solid fa-spinner fa-spin hidden"></i>
+            <span id="save-btn-text">Save Study & Push</span>
+          </button>
         </div>
       </form>
     </div>
@@ -131,7 +170,7 @@
 
   <!-- DRAMATIC TOAST NOTIFICATION -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-[var(--accent-green)] text-[var(--bg-parchment)] px-6 py-4 rounded-sm shadow-2xl border border-[var(--border-parchment)] flex items-center space-x-3">
-    <div class="w-8 h-8 rounded-sm bg-emerald-700 text-white flex items-center justify-center text-sm">
+    <div id="toast-icon" class="w-8 h-8 rounded-sm bg-emerald-700 text-white flex items-center justify-center text-sm">
       <i class="fa-solid fa-check"></i>
     </div>
     <div>
@@ -142,25 +181,23 @@
 
   <script>
     const STORAGE_KEY = 'aidan_sketchbook_artworks';
+    const GH_CONFIG_KEY = 'aidan_sketchbook_gh_config';
     const ADMIN_CODE = 'Gmao0314';
+
+    let selectedFileBase64 = null;
+    let selectedFileName = null;
 
     const DEFAULT_ARTWORKS = [
       { id: 1, title: "Portrait Study with Signature", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "image.jpg", description: "Observational graphite portrait study dated September 9, 2026." },
       { id: 2, title: "Portrait Study No Reference", category: "Portraits", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261018_034436745~2.jpg", description: "Detailed graphite portrait study capturing expressive features." },
       { id: 3, title: "Man in Coat", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Ink & Graphite", image: "19e31b84-d4c5-4c94-a258-a468fa0a43b9.png", description: "Bold character study featuring high-contrast black ink work." },
       { id: 4, title: "Macro Eye & Structural Shading", category: "Anatomy", date: "Oct 17, 2026", medium: "Digital Graphite Study", image: "eye.png", description: "Detailed observational study of eye anatomy and specular highlights." },
-      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." },
-      { id: 6, title: "Skull Anatomy Perspective Grid I", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite Pencil", image: "PXL_20261017_154914010.jpg", description: "Anatomical skull breakdown utilizing perspective construction lines." },
-      { id: 7, title: "Skull Anatomy Frontal View", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154917483.jpg", description: "Frontal skull study mapping brow structures and orbital sockets." },
-      { id: 8, title: "Skull Anatomy & Brow Notes", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_154926365.jpg", description: "Detailed anatomical breakdown focusing on brow lines and cranial plates." },
-      { id: 9, title: "Skull Anatomy 3/4 Angle", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261018_022902080~2.jpg", description: "Three-quarter perspective study mapping brow planes." },
-      { id: 10, title: "Plane breakdown + memory sketch", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155016501~2.jpg", description: "Exploration of geometric planar breakdown melting into fluid drops." },
-      { id: 11, title: "Portrait Study (No Ref)", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155022266~2.jpg", description: "Freehand portrait study from imagination." },
-      { id: 12, title: "Portrait Study 6/20", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155457922~2.jpg", description: "Tonal portrait study focusing on soft shadows." },
-      { id: 13, title: "Portrait Study 6/19", category: "Portraits", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155035983~2.jpg", description: "Observational head study capturing curly hair texture." },
-      { id: 14, title: "Geometric Teapot Concept", category: "Concepts", date: "Oct 17, 2026", medium: "Graphite Pencil", image: "PXL_20261017_155044822~2.jpg", description: "Combining sharp wireframe construction with shaded curved forms." },
-      { id: 15, title: "HB pencil study of hand structure", category: "Anatomy", date: "Oct 17, 2026", medium: "HB Graphite", image: "PXL_20261017_155050781~3.jpg", description: "Focused mainly on the knuckles and how the skin wraps around the bone." }
+      { id: 5, title: "Green Tonal Portrait Study", category: "Portraits", date: "Oct 17, 2026", medium: "Digital Airbrush", image: "Screenshot_20260802-232807.png", description: "Atmospheric portrait study exploring monochromatic green shading." }
     ];
+
+    window.onload = function() {
+      loadGithubSettings();
+    };
 
     function verifyPasscode(e) {
       e.preventDefault();
@@ -177,6 +214,42 @@
       document.getElementById('auth-screen').classList.remove('hidden');
       document.getElementById('dashboard').classList.add('hidden');
       document.getElementById('passcode-input').value = '';
+    }
+
+    function toggleGithubSettings() {
+      const panel = document.getElementById('github-config-panel');
+      panel.classList.toggle('hidden');
+    }
+
+    function loadGithubSettings() {
+      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+      if (cfg.owner) document.getElementById('gh-owner').value = cfg.owner;
+      if (cfg.repo) document.getElementById('gh-repo').value = cfg.repo;
+      if (cfg.token) document.getElementById('gh-token').value = cfg.token;
+      updateGithubBadge();
+    }
+
+    function saveGithubSettings() {
+      const cfg = {
+        owner: document.getElementById('gh-owner').value.trim(),
+        repo: document.getElementById('gh-repo').value.trim(),
+        token: document.getElementById('gh-token').value.trim()
+      };
+      localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
+      updateGithubBadge();
+      showToast("GitHub Settings Saved", "Repository configurations updated successfully!");
+    }
+
+    function updateGithubBadge() {
+      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+      const badge = document.getElementById('github-status-badge');
+      if (cfg.owner && cfg.repo && cfg.token) {
+        badge.innerText = "Connected: " + cfg.repo;
+        badge.className = "text-[10px] px-2 py-0.5 rounded-sm bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono";
+      } else {
+        badge.innerText = "Not Configured (Local Only)";
+        badge.className = "text-[10px] px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 border border-amber-300 font-mono";
+      }
     }
 
     function getArtworks() {
@@ -196,24 +269,75 @@
     function handleFileSelect(event) {
       const file = event.target.files[0];
       if (file) {
+        selectedFileName = file.name;
         const reader = new FileReader();
-        reader.onload = (e) => document.getElementById('form-image').value = e.target.result;
+        reader.onload = (e) => {
+          const result = e.target.result;
+          selectedFileBase64 = result.split(',')[1]; // Strip base64 prefix for GitHub API
+          document.getElementById('form-image').value = file.name;
+        };
         reader.readAsDataURL(file);
       }
     }
 
-    function saveStudy(e) {
+    // Direct GitHub REST API Commit Function
+    async function pushToGitHub(path, contentBase64, commitMessage) {
+      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+      if (!cfg.owner || !cfg.repo || !cfg.token) return false;
+
+      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`;
+      
+      let sha = "";
+      try {
+        const checkRes = await fetch(url, {
+          headers: { "Authorization": `token ${cfg.token}` }
+        });
+        if (checkRes.ok) {
+          const checkData = await checkRes.json();
+          sha = checkData.sha;
+        }
+      } catch (e) { console.log("New file commit."); }
+
+      const payload = {
+        message: commitMessage,
+        content: contentBase64,
+        ...(sha && { sha })
+      };
+
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token ${cfg.token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      return res.ok;
+    }
+
+    async function saveStudy(e) {
       e.preventDefault();
+      const spinner = document.getElementById('save-spinner');
+      const btnText = document.getElementById('save-btn-text');
+      const btn = document.getElementById('save-btn');
+
+      spinner.classList.remove('hidden');
+      btnText.innerText = "Pushing to GitHub...";
+      btn.disabled = true;
+
       const list = getArtworks();
       const id = document.getElementById('edit-id').value;
       const isEditing = !!id;
+      const imgVal = document.getElementById('form-image').value || 'image.jpg';
+
       const item = {
         id: id ? parseInt(id) : Date.now(),
         title: document.getElementById('form-title').value,
         category: document.getElementById('form-category').value,
         medium: document.getElementById('form-medium').value,
         date: document.getElementById('form-date').value || '2026',
-        image: document.getElementById('form-image').value || 'image.jpg',
+        image: imgVal,
         description: document.getElementById('form-desc').value
       };
 
@@ -224,32 +348,59 @@
         list.unshift(item);
       }
 
+      // Save locally
       saveArtworks(list);
 
-      // Dramatic button flash and toast feedback
-      const btn = document.getElementById('save-btn');
-      btn.innerText = isEditing ? "Study Updated! ✓" : "Archived Successfully! ✓";
+      // Attempt GitHub Push if configured
+      let githubPushed = false;
+      const cfg = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+      
+      if (cfg.token && cfg.owner && cfg.repo) {
+        try {
+          // 1. Upload image file if selected
+          if (selectedFileBase64 && selectedFileName) {
+            await pushToGitHub(selectedFileName, selectedFileBase64, `Upload image: ${selectedFileName}`);
+          }
+
+          // 2. Upload artworks.json metadata
+          const jsonContent = btoa(unescape(encodeURIComponent(JSON.stringify(list, null, 2))));
+          githubPushed = await pushToGitHub('data/artworks.json', jsonContent, `Update sketchbook index: ${item.title}`);
+        } catch (err) {
+          console.error("GitHub Push Error:", err);
+        }
+      }
+
+      spinner.classList.add('hidden');
+      btn.disabled = false;
+
+      // Dramatic UI Feedback
+      btnText.innerText = isEditing ? "Study Updated! ✓" : "Archived & Pushed! ✓";
       btn.classList.add('animate-dramatic');
 
-      showToast(isEditing ? "Study successfully updated in archive" : "New drawing permanently added to sketchbook");
+      if (githubPushed) {
+        showToast("Pushed Directly to GitHub!", `Committed "${item.title}" & updated repository file index.`);
+      } else {
+        showToast(isEditing ? "Study Updated Locally" : "Saved to Local Storage", "Configure GitHub settings above to push directly to repo!");
+      }
 
       setTimeout(() => {
         btn.classList.remove('animate-dramatic');
-        btn.innerText = "Save Study";
+        btnText.innerText = "Save Study & Push";
       }, 1500);
 
       resetForm();
     }
 
-    function showToast(subtitle) {
+    function showToast(title, subtitle) {
       const toast = document.getElementById('toast');
+      document.getElementById('toast-title').innerText = title;
       document.getElementById('toast-subtitle').innerText = subtitle;
       toast.classList.remove('hidden');
       toast.classList.add('toast-anim');
       setTimeout(() => {
         toast.classList.remove('toast-anim');
         toast.classList.add('hidden');
-      }, 3000);
+      }, 3500);
     }
 
     function editItem(id) {
@@ -268,8 +419,9 @@
 
     function deleteItem(id) {
       if (confirm("Delete this study permanently from the index?")) {
-        saveArtworks(getArtworks().filter(a => a.id !== id));
-        showToast("Study removed from archive.");
+        const updated = getArtworks().filter(a => a.id !== id);
+        saveArtworks(updated);
+        showToast("Study Removed", "Removed item from local study index.");
       }
     }
 
@@ -278,6 +430,8 @@
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
       document.querySelector('form').reset();
       document.getElementById('form-date').value = '2026';
+      selectedFileBase64 = null;
+      selectedFileName = null;
     }
 
     function renderList() {
