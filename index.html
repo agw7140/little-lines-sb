@@ -47,6 +47,7 @@
       opacity: 0.04;
     }
 
+    /* Organic morphing background shape */
     .morph-shape {
       animation: organicMorph 14s ease-in-out infinite;
       will-change: border-radius;
@@ -58,11 +59,6 @@
       50% { border-radius: 40% 60% 50% 50% / 55% 45% 55% 45%; }
       75% { border-radius: 73% 27% 44% 56% / 49% 73% 27% 51%; }
       100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-    }
-
-    @keyframes slowRotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     .reveal-on-scroll {
@@ -97,11 +93,14 @@
       width: 33.333%;
       height: 100%;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-parchment); }
-    ::-webkit-scrollbar-thumb { background: var(--accent-sage); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--accent-sage); border-radius: 2px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-green); }
   </style>
 </head>
@@ -113,10 +112,10 @@
   <div class="flex flex-col justify-between min-h-screen">
     <div>
       <!-- NAVIGATION -->
-      <nav id="main-nav" class="sticky top-0 z-40 bg-[var(--bg-parchment)]/90 backdrop-blur-md border-b border-[var(--border-parchment)] transition-all duration-300">
+      <nav id="main-nav" class="sticky top-0 z-40 bg-[var(--bg-parchment)]/95 backdrop-blur-md border-b border-[var(--border-parchment)] transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            <div id="nav-logo-icon" class="w-10 h-10 rounded-full bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-md group-hover:rotate-12 transition-transform duration-300">
+            <div id="nav-logo-icon" class="w-10 h-10 rounded-sm bg-[var(--accent-green)] text-[var(--bg-parchment)] flex items-center justify-center font-serif font-bold text-lg shadow-sm">
               L
             </div>
             <div>
@@ -125,21 +124,21 @@
           </div>
 
           <!-- DESKTOP FILTER BUTTONS WITH SLIDER -->
-          <div class="hidden md:flex items-center space-x-1 bg-[var(--card-parchment)] p-1.5 rounded-full border border-[var(--border-parchment)] shadow-inner relative" id="filter-container">
-            <div id="filter-slider" class="absolute top-1.5 bottom-1.5 bg-[var(--accent-green)] rounded-full shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none" style="left: 6px; width: 85px;"></div>
+          <div class="hidden md:flex items-center space-x-1 bg-[var(--card-parchment)] p-1 rounded-sm border border-[var(--border-parchment)] shadow-xs relative" id="filter-container">
+            <div id="filter-slider" class="absolute top-1 bottom-1 bg-[var(--accent-green)] rounded-sm shadow-xs transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none" style="left: 4px; width: 85px;"></div>
             
-            <button onclick="filterCategory('All', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium transition-colors duration-300 text-[var(--bg-parchment)]" data-category="All">All Works</button>
-            <button onclick="filterCategory('Anatomy', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Anatomy">Anatomy & Skulls</button>
-            <button onclick="filterCategory('Portraits', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Portraits">Portraits</button>
-            <button onclick="filterCategory('Concepts', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Concepts">Concepts</button>
+            <button onclick="filterCategory('All', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium transition-colors duration-300 text-[var(--bg-parchment)]" data-category="All">All Works</button>
+            <button onclick="filterCategory('Anatomy', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Anatomy">Anatomy & Skulls</button>
+            <button onclick="filterCategory('Portraits', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Portraits">Portraits</button>
+            <button onclick="filterCategory('Concepts', this)" class="filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300" data-category="Concepts">Concepts</button>
           </div>
 
           <!-- TOOLS -->
           <div class="flex items-center space-x-2">
-            <span class="inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--card-parchment)] px-3 py-1.5 rounded-full border border-[var(--border-parchment)] shadow-sm" id="art-count-badge">
+            <span class="inline-block text-xs font-mono text-[var(--text-muted)] bg-[var(--card-parchment)] px-3 py-1.5 rounded-sm border border-[var(--border-parchment)] shadow-xs" id="art-count-badge">
               15 Studies
             </span>
-            <a href="upload.html" title="Admin Studio" class="w-9 h-9 rounded-full bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] hover:rotate-90 transition-all duration-300 shadow-sm">
+            <a href="upload.html" title="Admin Studio" class="w-9 h-9 rounded-sm bg-[var(--card-parchment)] border border-[var(--border-parchment)] flex items-center justify-center text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 shadow-xs">
               <i class="fa-solid fa-lock text-xs"></i>
             </a>
           </div>
@@ -147,10 +146,10 @@
 
         <!-- Mobile Filter Bar -->
         <div class="md:hidden flex overflow-x-auto px-4 py-2 space-x-2 border-t border-[var(--border-parchment)]/50 bg-[var(--bg-parchment)] scrollbar-none">
-          <button onclick="filterCategory('All')" class="filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] transition-all shadow-sm" data-category="All">All Works</button>
-          <button onclick="filterCategory('Anatomy')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Anatomy">Anatomy</button>
-          <button onclick="filterCategory('Portraits')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Portraits">Portraits</button>
-          <button onclick="filterCategory('Concepts')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Concepts">Concepts</button>
+          <button onclick="filterCategory('All')" class="filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] transition-all shadow-xs" data-category="All">All Works</button>
+          <button onclick="filterCategory('Anatomy')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Anatomy">Anatomy</button>
+          <button onclick="filterCategory('Portraits')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Portraits">Portraits</button>
+          <button onclick="filterCategory('Concepts')" class="filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all" data-category="Concepts">Concepts</button>
         </div>
       </nav>
 
@@ -168,34 +167,34 @@
             </p>
 
             <div class="pt-2 flex flex-wrap gap-4 items-center">
-              <a href="#gallery" class="px-6 py-3 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-xl text-sm font-medium hover:opacity-90 hover:scale-105 transition-all duration-300 shadow-xl flex items-center space-x-2">
+              <a href="#gallery" class="px-6 py-3 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-sm font-medium hover:opacity-90 hover:scale-[1.02] transition-all duration-300 shadow-md flex items-center space-x-2">
                 <span>Explore Collection</span>
-                <i class="fa-solid font-xs fa-arrow-down animate-bounce"></i>
+                <i class="fa-solid text-xs fa-arrow-down animate-bounce"></i>
               </a>
             </div>
           </div>
 
-          <!-- HERO CIRCLE SLIDESHOW WITH UPDIRECTED OBJECT-CONTAIN -->
+          <!-- HERO SHIFTING & MORPHING CIRCLE SLIDESHOW -->
           <div class="lg:col-span-5 flex justify-center items-center reveal-on-scroll">
             <div class="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
               <div class="absolute inset-0 rounded-full bg-[var(--accent-sage)]/30 blur-3xl glow-bg"></div>
               
-              <div onclick="openCurrentSlideModal()" class="relative w-full h-full morph-shape bg-[var(--accent-green)] p-2 shadow-2xl cursor-pointer overflow-hidden group">
-                <div class="relative w-full h-full overflow-hidden rounded-[inherit] bg-[var(--accent-green)]">
+              <div onclick="openCurrentSlideModal()" class="relative w-full h-full rounded-full bg-[var(--accent-green)] p-2 shadow-xl cursor-pointer overflow-hidden group morph-shape border-2 border-[var(--border-parchment)]">
+                <div class="relative w-full h-full overflow-hidden rounded-full bg-[var(--accent-green)]">
                   <div id="slide-track" class="slide-track">
-                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slide-img-prev" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
+                    <div class="slide-item bg-[var(--accent-green)]">
+                      <img id="slide-img-prev" src="" alt="Study" class="w-full h-full object-cover p-2 rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
-                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slide-img-curr" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
+                    <div class="slide-item bg-[var(--accent-green)]">
+                      <img id="slide-img-curr" src="" alt="Study" class="w-full h-full object-cover p-2 rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
-                    <div class="slide-item bg-[var(--accent-green)] flex items-center justify-center">
-                      <img id="slide-img-next" src="" alt="Study" class="w-full h-full object-contain p-2" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
+                    <div class="slide-item bg-[var(--accent-green)]">
+                      <img id="slide-img-next" src="" alt="Study" class="w-full h-full object-cover p-2 rounded-full" onerror="this.onerror=null; this.src='https://placehold.co/600x600/2d4030/ffffff?text=Study';">
                     </div>
                   </div>
 
-                  <div class="absolute inset-0 bg-[var(--accent-green)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-20">
-                    <div class="bg-[var(--card-parchment)]/95 backdrop-blur-md px-4 py-2 rounded-full text-xs font-semibold text-[var(--text-ink)] shadow-xl flex items-center space-x-2 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                  <div class="absolute inset-0 bg-[var(--accent-green)]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none z-20 rounded-full">
+                    <div class="bg-[var(--card-parchment)]/95 backdrop-blur-md px-4 py-2 rounded-sm text-xs font-semibold text-[var(--text-ink)] shadow-md flex items-center space-x-2 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300 border border-[var(--border-parchment)]">
                       <i class="fa-solid fa-magnifying-glass"></i>
                       <span>Inspect Study</span>
                     </div>
@@ -203,17 +202,17 @@
                 </div>
               </div>
 
-              <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-[var(--card-parchment)]/95 backdrop-blur-md border border-[var(--border-parchment)] px-3 py-1.5 rounded-full text-xs text-[var(--text-ink)] shadow-lg flex items-center justify-between w-64 z-10">
-                <button onclick="prevSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] hover:scale-125 transition-all flex-shrink-0"><i class="fa-solid fa-chevron-left"></i></button>
+              <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-[var(--card-parchment)]/95 backdrop-blur-md border border-[var(--border-parchment)] px-3 py-1.5 rounded-sm text-xs text-[var(--text-ink)] shadow-md flex items-center justify-between w-64 z-10">
+                <button onclick="prevSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] transition-all flex-shrink-0"><i class="fa-solid fa-chevron-left"></i></button>
                 <span id="slide-caption" class="font-mono text-[11px] font-medium truncate px-1 text-center flex-grow">Featured Study</span>
-                <button onclick="nextSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] hover:scale-125 transition-all flex-shrink-0"><i class="fa-solid fa-chevron-right"></i></button>
+                <button onclick="nextSlide(event)" class="w-8 h-6 flex items-center justify-center hover:text-[var(--accent-sage)] transition-all flex-shrink-0"><i class="fa-solid fa-chevron-right"></i></button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- GALLERY SECTION (Editorial Masonry Staggered Layout with Visible Borders) -->
+      <!-- GALLERY SECTION WITH VISIBLE CARD BORDERS & MASONRY -->
       <section id="gallery" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-[var(--border-parchment)] reveal-on-scroll">
           <div>
@@ -222,7 +221,7 @@
           </div>
           <div class="mt-4 md:mt-0 flex items-center space-x-2">
             <span class="text-xs text-[var(--text-muted)]">Sort by:</span>
-            <select id="sort-select" onchange="handleSortChange()" class="bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-xs font-medium text-[var(--text-ink)] rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)] shadow-sm cursor-pointer">
+            <select id="sort-select" onchange="handleSortChange()" class="bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-xs font-medium text-[var(--text-ink)] rounded-sm px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)] shadow-xs cursor-pointer">
               <option value="default">Default Order</option>
               <option value="title">Title (A-Z)</option>
               <option value="category">Category</option>
@@ -248,14 +247,14 @@
 
   <!-- DETAIL MODAL -->
   <div id="art-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0 overflow-hidden" onclick="closeModalOnBackdrop(event)">
-    <div class="relative bg-[var(--card-parchment)] rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-[var(--border-parchment)] my-8 flex flex-col md:flex-row transform scale-95 transition-all duration-300 z-20" id="modal-card" onclick="event.stopPropagation()">
-      <button onclick="closeModal()" class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-[var(--card-parchment)]/90 backdrop-blur-md text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 flex items-center justify-center shadow-md">
-        <i class="fa-solid fa-xmark text-lg hover:rotate-90 transition-transform"></i>
+    <div class="relative bg-[var(--card-parchment)] rounded-sm max-w-4xl w-full overflow-hidden shadow-2xl border border-[var(--border-parchment)] my-8 flex flex-col md:flex-row transform scale-95 transition-all duration-300 z-20" id="modal-card" onclick="event.stopPropagation()">
+      <button onclick="closeModal()" class="absolute top-4 right-4 z-30 w-9 h-9 rounded-sm bg-[var(--card-parchment)]/90 backdrop-blur-md text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all duration-300 flex items-center justify-center shadow-md border border-[var(--border-parchment)]">
+        <i class="fa-solid fa-xmark text-lg"></i>
       </button>
 
       <div class="md:w-3/5 bg-[var(--accent-green)]/10 flex items-center justify-center p-4 h-[380px] md:h-[540px] relative overflow-hidden flex-shrink-0">
         <div id="modal-img-container" class="relative w-full h-full flex items-center justify-center transition-opacity duration-300">
-          <img id="modal-img" src="" alt="" class="max-h-full max-w-full w-auto h-auto object-contain rounded-xl shadow-2xl transition-all duration-300">
+          <img id="modal-img" src="" alt="" class="max-h-full max-w-full w-auto h-auto object-contain rounded-sm shadow-xl transition-all duration-300">
         </div>
       </div>
 
@@ -263,8 +262,8 @@
         <div class="space-y-4">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span id="modal-category" class="inline-block bg-[var(--accent-green)] text-[var(--bg-parchment)] text-[10px] font-semibold tracking-wider uppercase px-3 py-1 rounded-full shadow-sm">Anatomy</span>
-              <button onclick="copyStudyLink()" title="Copy study link" class="text-xs text-[var(--text-muted)] hover:text-[var(--text-ink)] flex items-center space-x-1 bg-[var(--card-parchment)] px-2.5 py-1 rounded-full border border-[var(--border-parchment)]">
+              <span id="modal-category" class="inline-block bg-[var(--accent-green)] text-[var(--bg-parchment)] text-[10px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded-sm shadow-xs">Anatomy</span>
+              <button onclick="copyStudyLink()" title="Copy study link" class="text-xs text-[var(--text-muted)] hover:text-[var(--text-ink)] flex items-center space-x-1 bg-[var(--card-parchment)] px-2.5 py-1 rounded-sm border border-[var(--border-parchment)]">
                 <i class="fa-solid fa-link text-[10px]"></i>
                 <span id="copy-label">Share</span>
               </button>
@@ -288,10 +287,10 @@
 
         <div class="pt-6 border-t border-[var(--border-parchment)] mt-6 flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <button onclick="navigateModal(-1)" class="p-2.5 rounded-xl bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-sm">
+            <button onclick="navigateModal(-1)" class="p-2.5 rounded-sm bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-xs">
               <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button onclick="navigateModal(1)" class="p-2.5 rounded-xl bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-sm">
+            <button onclick="navigateModal(1)" class="p-2.5 rounded-sm bg-[var(--card-parchment)] border border-[var(--border-parchment)] text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all shadow-xs">
               <i class="fa-solid fa-chevron-right"></i>
             </button>
           </div>
@@ -352,13 +351,12 @@
       let filtered = currentCategory === 'All' ? ARTWORKS : ARTWORKS.filter(a => a.category === currentCategory);
       document.getElementById('art-count-badge').innerText = `${filtered.length} Studies`;
 
-      // Editorial masonry cards with visible paper borders
       grid.innerHTML = filtered.map((art, index) => `
-        <div onclick="openModalById(${art.id})" class="group mb-10 break-inside-avoid bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 60}ms;">
-          <div class="relative overflow-hidden bg-[var(--bg-parchment)] rounded-lg mb-3 border border-[var(--border-parchment)]/50">
-            <img src="${art.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}';" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500">
+        <div onclick="openModalById(${art.id})" class="group mb-10 break-inside-avoid bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm p-4 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer reveal-on-scroll" style="transition-delay: ${(index % 3) * 60}ms;">
+          <div class="relative overflow-hidden bg-[var(--bg-parchment)] rounded-sm mb-3 border border-[var(--border-parchment)]">
+            <img src="${art.image}" onerror="this.onerror=null; this.src='https://placehold.co/600x750/2d4030/ffffff?text=${encodeURIComponent(art.title)}';" alt="${art.title}" class="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500">
             <div class="absolute top-2.5 left-2.5">
-              <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-[var(--border-parchment)] shadow-xs">
+              <span class="bg-[var(--card-parchment)]/95 backdrop-blur-md text-[var(--text-ink)] text-[10px] font-semibold px-2.5 py-0.5 rounded-sm border border-[var(--border-parchment)] shadow-xs">
                 ${art.category}
               </span>
             </div>
@@ -367,7 +365,7 @@
             <h3 class="font-serif font-bold text-sm text-[var(--text-ink)] group-hover:text-[var(--accent-sage)] transition-colors leading-snug">${art.title}</h3>
             <p class="text-xs text-[var(--text-muted)] mt-1 font-mono">${art.medium}</p>
           </div>
-          <div class="mt-3 pt-3 border-t border-[var(--border-parchment)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
+          <div class="mt-3 pt-3 border-t border-[var(--border-parchment)] flex items-center justify-between text-xs text-[var(--text-muted)]">
             <span class="font-academic italic">${art.date}</span>
             <span class="font-medium text-[var(--text-ink)] group-hover:translate-x-1 transition-transform inline-flex items-center space-x-1"><span>Inspect</span> <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
           </div>
@@ -390,16 +388,16 @@
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         if (btn.dataset.category === cat) {
-          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--bg-parchment)] transition-colors duration-300";
+          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium text-[var(--bg-parchment)] transition-colors duration-300";
         } else {
-          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300";
+          btn.className = "filter-btn relative z-10 px-4 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-ink)] transition-colors duration-300";
         }
       });
 
       document.querySelectorAll('.filter-btn-mobile').forEach(btn => {
         btn.className = btn.dataset.category === cat 
-          ? "filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] shadow-sm transition-all"
-          : "filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all";
+          ? "filter-btn-mobile active whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium bg-[var(--accent-green)] text-[var(--bg-parchment)] shadow-sm transition-all"
+          : "filter-btn-mobile whitespace-nowrap px-3.5 py-1.5 rounded-sm text-xs font-medium text-[var(--text-muted)] bg-[var(--card-parchment)] border border-[var(--border-parchment)] transition-all";
       });
 
       renderGallery();
