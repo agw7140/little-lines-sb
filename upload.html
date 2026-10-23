@@ -3,56 +3,87 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Studio — little lines.</title>
+  <title>Admin Studio — little lines sketchbook</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-parchment: #f5f2e9;
+      --card-parchment: #fcf9f2;
+      --text-ink: #27362a;
+      --text-muted: #536456;
+      --border-parchment: #ded6c5;
+      --accent-green: #2d4030;
+    }
+    body {
+      background-color: var(--bg-parchment);
+      color: var(--text-ink);
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes dramaticFlash {
+      0% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
+      30% { transform: scale(1.03); background-color: #166534; color: #ffffff; box-shadow: 0 0 25px rgba(22, 101, 52, 0.6); }
+      100% { transform: scale(1); background-color: #2d4030; color: #ffffff; }
+    .animate-dramatic {
+      animation: dramaticFlash 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideUpToast {
+      0% { transform: translateY(100px); opacity: 0; }
+      15% { transform: translateY(0); opacity: 1; }
+      85% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100px); opacity: 0; }
+    }
+    .toast-anim {
+      animation: slideUpToast 3s ease-in-out forwards;
+    }
+  </style>
 </head>
-<body class="bg-[#f5f2e9] text-[#27362a] font-sans min-h-screen p-4 sm:p-8">
+<body class="min-h-screen p-4 sm:p-8">
 
   <!-- AUTH SCREEN -->
-  <div id="auth-screen" class="max-w-md mx-auto mt-20 bg-white p-8 rounded-2xl shadow-xl border border-[#ded6c5] text-center">
-    <div class="w-12 h-12 bg-[#2d4030]/10 text-[#2d4030] rounded-full flex items-center justify-center mx-auto text-xl mb-4">
+  <div id="auth-screen" class="max-w-md mx-auto mt-20 bg-[var(--card-parchment)] p-8 rounded-sm shadow-xl border border-[var(--border-parchment)] text-center">
+    <div class="w-12 h-12 bg-[var(--accent-green)]/10 text-[var(--accent-green)] rounded-sm flex items-center justify-center mx-auto text-xl mb-4">
       <i class="fa-solid fa-lock"></i>
     </div>
-    <h1 class="text-2xl font-serif font-bold text-[#2d4030] mb-2">Admin Portal</h1>
-    <p class="text-xs text-[#536456] mb-6">Enter admin passcode to upload and manage portfolio items.</p>
+    <h1 class="text-2xl font-serif font-bold text-[var(--text-ink)] mb-2">Admin Portal</h1>
+    <p class="text-xs text-[var(--text-muted)] mb-6 font-academic italic">Enter admin passcode to upload and manage portfolio studies.</p>
 
     <form onsubmit="verifyPasscode(event)" class="space-y-4">
-      <input type="password" id="passcode-input" placeholder="Passcode" required class="w-full text-center tracking-widest bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl px-4 py-3 text-lg text-[#2d4030] focus:outline-none focus:ring-1 focus:ring-[#2d4030]">
+      <input type="password" id="passcode-input" placeholder="Passcode" required class="w-full text-center tracking-widest bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm px-4 py-3 text-lg text-[var(--text-ink)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
       <p id="auth-error" class="text-xs text-rose-600 hidden">Incorrect passcode.</p>
-      <button type="submit" class="w-full py-3 bg-[#2d4030] text-white rounded-xl text-sm font-medium hover:bg-[#1f2d22]">Unlock Studio</button>
+      <button type="submit" class="w-full py-3 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-sm font-medium hover:opacity-90 transition-all">Unlock Studio</button>
     </form>
-    <a href="index.html" class="block mt-4 text-xs text-[#536456] underline">← Back to Portfolio</a>
+    <a href="index.html" class="block mt-4 text-xs text-[var(--text-muted)] hover:text-[var(--text-ink)] underline">← Back to Portfolio</a>
   </div>
 
   <!-- DASHBOARD -->
   <div id="dashboard" class="max-w-5xl mx-auto hidden space-y-8">
-    <div class="flex items-center justify-between pb-4 border-b border-[#ded6c5]">
+    <div class="flex items-center justify-between pb-4 border-b border-[var(--border-parchment)]">
       <div>
-        <h1 class="text-2xl font-serif font-bold text-[#2d4030]">Artwork Studio & Manager</h1>
-        <p class="text-xs text-[#536456]">Manage studies displayed on index.html</p>
+        <h1 class="text-2xl font-serif font-bold text-[var(--text-ink)]">Artwork Studio & Manager</h1>
+        <p class="text-xs text-[var(--text-muted)] font-academic italic">Manage and archive studies displayed on index.html</p>
       </div>
       <div class="flex items-center space-x-3">
-        <a href="index.html" class="px-4 py-2 bg-white border border-[#ded6c5] rounded-xl text-xs font-semibold text-[#2d4030] hover:bg-gray-50">View Live Site</a>
-        <button onclick="logout()" class="px-4 py-2 bg-rose-600 text-white rounded-xl text-xs font-semibold hover:bg-rose-700">Logout</button>
+        <a href="index.html" class="px-4 py-2 bg-[var(--card-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs font-semibold text-[var(--text-ink)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] transition-all">View Live Site</a>
+        <button onclick="logout()" class="px-4 py-2 bg-rose-700 text-white rounded-sm text-xs font-semibold hover:bg-rose-800 transition-all">Logout</button>
       </div>
     </div>
 
     <!-- ADD FORM -->
-    <div class="bg-white p-6 rounded-2xl border border-[#ded6c5] shadow-sm">
-      <h2 id="form-heading" class="text-lg font-serif font-bold text-[#2d4030] mb-4">Upload / Add New Study</h2>
+    <div class="bg-[var(--card-parchment)] p-6 sm:p-8 rounded-sm border border-[var(--border-parchment)] shadow-sm relative overflow-hidden">
+      <h2 id="form-heading" class="text-lg font-serif font-bold text-[var(--text-ink)] mb-4">Upload / Add New Study</h2>
       <form onsubmit="saveStudy(event)" class="space-y-4">
         <input type="hidden" id="edit-id">
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Title</label>
-            <input type="text" id="form-title" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Title</label>
+            <input type="text" id="form-title" required class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Category</label>
-            <select id="form-category" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Category</label>
+            <select id="form-category" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
               <option value="Anatomy">Anatomy</option>
               <option value="Portraits">Portraits</option>
               <option value="Concepts">Concepts</option>
@@ -62,39 +93,50 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Medium & Technique</label>
-            <input type="text" id="form-medium" required placeholder="HB Graphite Pencil" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Medium & Technique</label>
+            <input type="text" id="form-medium" required placeholder="HB Graphite Pencil" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase mb-1">Year / Date</label>
-            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Year / Date</label>
+            <input type="text" id="form-date" required placeholder="2026" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase mb-1">Image Source</label>
+          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Image Source</label>
           <div class="space-y-2">
-            <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-[#2d4030] file:text-white cursor-pointer">
-            <input type="text" id="form-image" placeholder="Image URL or relative path (e.g. image.jpg)" class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm">
+            <input type="file" accept="image/*" onchange="handleFileSelect(event)" class="text-xs file:mr-3 file:py-2 file:px-4 file:rounded-sm file:border-0 file:bg-[var(--accent-green)] file:text-[var(--bg-parchment)] cursor-pointer">
+            <input type="text" id="form-image" placeholder="Image URL or relative path (e.g. image.jpg)" class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase mb-1">Description / Study Breakdown</label>
-          <textarea id="form-desc" rows="3" required class="w-full bg-[#f5f2e9]/50 border border-[#ded6c5] rounded-xl p-2.5 text-sm"></textarea>
+          <label class="block text-xs font-semibold uppercase mb-1 tracking-wider text-[var(--text-muted)]">Description / Study Breakdown</label>
+          <textarea id="form-desc" rows="3" required class="w-full bg-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-green)]"></textarea>
         </div>
 
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="resetForm()" class="px-4 py-2 border border-[#ded6c5] rounded-xl text-xs font-semibold">Reset</button>
-          <button type="submit" class="px-6 py-2 bg-[#2d4030] text-white rounded-xl text-xs font-semibold hover:bg-[#1f2d22]">Save Study</button>
+        <div class="flex justify-end space-x-3 pt-2">
+          <button type="button" onclick="resetForm()" class="px-4 py-2 border border-[var(--border-parchment)] rounded-sm text-xs font-semibold bg-[var(--card-parchment)] hover:bg-[var(--bg-parchment)] transition-all">Clear Form</button>
+          <button type="submit" id="save-btn" class="px-6 py-2 bg-[var(--accent-green)] text-[var(--bg-parchment)] rounded-sm text-xs font-semibold hover:opacity-90 transition-all shadow-sm">Save Study</button>
         </div>
       </form>
     </div>
 
     <!-- EXISTING ITEMS -->
     <div class="space-y-4">
-      <h2 class="text-lg font-serif font-bold text-[#2d4030]">Existing Studies Index</h2>
+      <h2 class="text-lg font-serif font-bold text-[var(--text-ink)]">Existing Studies Index</h2>
       <div id="item-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </div>
+  </div>
+
+  <!-- DRAMATIC TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-[var(--accent-green)] text-[var(--bg-parchment)] px-6 py-4 rounded-sm shadow-2xl border border-[var(--border-parchment)] flex items-center space-x-3">
+    <div class="w-8 h-8 rounded-sm bg-emerald-700 text-white flex items-center justify-center text-sm">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <div>
+      <h4 class="font-serif font-bold text-sm" id="toast-title">Study Archived Successfully!</h4>
+      <p class="text-xs text-[var(--bg-parchment)]/80" id="toast-subtitle">Added to sketchbook index & ready for next piece.</p>
     </div>
   </div>
 
@@ -143,11 +185,7 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ARTWORKS));
         return DEFAULT_ARTWORKS;
       }
-      try {
-        return JSON.parse(stored);
-      } catch (err) {
-        return DEFAULT_ARTWORKS;
-      }
+      try { return JSON.parse(stored); } catch (err) { return DEFAULT_ARTWORKS; }
     }
 
     function saveArtworks(data) {
@@ -168,17 +206,18 @@
       e.preventDefault();
       const list = getArtworks();
       const id = document.getElementById('edit-id').value;
+      const isEditing = !!id;
       const item = {
         id: id ? parseInt(id) : Date.now(),
         title: document.getElementById('form-title').value,
         category: document.getElementById('form-category').value,
         medium: document.getElementById('form-medium').value,
-        date: document.getElementById('form-date').value,
+        date: document.getElementById('form-date').value || '2026',
         image: document.getElementById('form-image').value || 'image.jpg',
         description: document.getElementById('form-desc').value
       };
 
-      if (id) {
+      if (isEditing) {
         const idx = list.findIndex(a => a.id === parseInt(id));
         if (idx !== -1) list[idx] = item;
       } else {
@@ -186,7 +225,31 @@
       }
 
       saveArtworks(list);
+
+      // Dramatic button flash and toast feedback
+      const btn = document.getElementById('save-btn');
+      btn.innerText = isEditing ? "Study Updated! ✓" : "Archived Successfully! ✓";
+      btn.classList.add('animate-dramatic');
+
+      showToast(isEditing ? "Study successfully updated in archive" : "New drawing permanently added to sketchbook");
+
+      setTimeout(() => {
+        btn.classList.remove('animate-dramatic');
+        btn.innerText = "Save Study";
+      }, 1500);
+
       resetForm();
+    }
+
+    function showToast(subtitle) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-subtitle').innerText = subtitle;
+      toast.classList.remove('hidden');
+      toast.classList.add('toast-anim');
+      setTimeout(() => {
+        toast.classList.remove('toast-anim');
+        toast.classList.add('hidden');
+      }, 3000);
     }
 
     function editItem(id) {
@@ -204,8 +267,9 @@
     }
 
     function deleteItem(id) {
-      if (confirm("Delete this study permanently?")) {
+      if (confirm("Delete this study permanently from the index?")) {
         saveArtworks(getArtworks().filter(a => a.id !== id));
+        showToast("Study removed from archive.");
       }
     }
 
@@ -213,22 +277,23 @@
       document.getElementById('edit-id').value = '';
       document.getElementById('form-heading').innerText = "Upload / Add New Study";
       document.querySelector('form').reset();
+      document.getElementById('form-date').value = '2026';
     }
 
     function renderList() {
       const list = getArtworks();
       document.getElementById('item-list').innerHTML = list.map(item => `
-        <div class="bg-white p-4 rounded-xl border border-[#ded6c5] flex space-x-4 items-center justify-between">
+        <div class="bg-[var(--card-parchment)] p-4 rounded-sm border border-[var(--border-parchment)] flex space-x-4 items-center justify-between">
           <div class="flex items-center space-x-3 overflow-hidden">
-            <img src="${item.image}" onerror="this.onerror=null; this.src='https://placehold.co/100x100/2d4030/ffffff?text=Img';" class="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0">
+            <img src="${item.image}" onerror="this.onerror=null; this.src='https://placehold.co/100x100/2d4030/ffffff?text=Img';" class="w-12 h-12 rounded-sm object-cover bg-gray-100 flex-shrink-0 border border-[var(--border-parchment)]">
             <div class="truncate">
-              <h4 class="font-serif font-bold text-sm text-[#2d4030] truncate">${item.title}</h4>
-              <p class="text-xs text-[#536456]">${item.category} • ${item.date}</p>
+              <h4 class="font-serif font-bold text-sm text-[var(--text-ink)] truncate">${item.title}</h4>
+              <p class="text-xs text-[var(--text-muted)]">${item.category} • ${item.date}</p>
             </div>
           </div>
           <div class="flex space-x-2 flex-shrink-0">
-            <button type="button" onclick="editItem(${item.id})" class="p-2 bg-gray-100 hover:bg-[#2d4030] hover:text-white rounded-lg text-xs"><i class="fa-solid fa-pen"></i></button>
-            <button type="button" onclick="deleteItem(${item.id})" class="p-2 bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-600 rounded-lg text-xs"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" onclick="editItem(${item.id})" class="p-2 bg-[var(--bg-parchment)] hover:bg-[var(--accent-green)] hover:text-[var(--bg-parchment)] border border-[var(--border-parchment)] rounded-sm text-xs transition-all"><i class="fa-solid fa-pen"></i></button>
+            <button type="button" onclick="deleteItem(${item.id})" class="p-2 bg-rose-50 hover:bg-rose-700 hover:text-white text-rose-700 border border-rose-200 rounded-sm text-xs transition-all"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       `).join('');
